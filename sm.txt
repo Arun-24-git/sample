@@ -1,0 +1,72 @@
+Simple Algorithm to Count Word Frequencies:
+
+    Input: Read a string from the user.
+    Split: Break the string into words and store them in a list.
+    Count: For each unique word in the list:
+        Count how many times it appears in the list.
+    Output: Display each unique word with its frequency.
+    
+    
+    
+    Simple Algorithm:
+
+    Input: Ask the user to enter a list of numbers separated by commas.
+    Check: For each number:
+        If it is 100 or more, replace it with 'over'.
+        Otherwise, keep it as it is.
+    Output: Show the new list.
+    
+    
+    Simple Algorithm:
+
+    Input: Ask the user to enter a list of words separated by commas.
+    Count: For each word, count how many times the letter 'a' (case-insensitive) appears.
+    Add: Add up all the counts from the list.
+    Output: Show the total number of 'a' occurrences.
+    
+    
+    Simple Algorithm for Comparing Two Lists
+
+    Input:
+        Ask the user to enter two lists of integers (separated by spaces).
+
+    Convert:
+        Convert the input strings into two separate lists of integers.
+
+    Check Sum:
+        Calculate the sum of each list.
+        Compare the sums and determine if they are equal.
+
+    Check Length:
+        Compare the lengths of the two lists and check if they are the same.
+
+    Find Common Values:
+        Identify the values that are present in both lists.
+
+    Output:
+        Display whether the sums are equal.
+        Display whether the lists are of the same length.
+        Display the common values between the two lists.
+
+
+
+Simple Algorithm for Multiple Tasks:
+
+    Input a List of Integers:
+        Ask the user to enter a list of integers.
+        Convert the input into a list of integers.
+
+    Find Positive Numbers:
+        Filter out numbers greater than 0 and display them.
+
+    Generate Squares:
+        Ask the user to enter a value N.
+        Create a list of squares for numbers from 1 to N.
+
+    Extract Vowels from a Word:
+        Ask the user to enter a word.
+        Identify and list all the vowels in the word.
+
+    Find Ordinal Values of Characters:
+        Ask the user to enter another word.
+        Generate a list of ordinal (ASCII) values for each character in the word.
