@@ -1,0 +1,37 @@
+### Step-by-Step Algorithm for the Given Java Program  
+
+1. **Define the `product` class**  
+   - Declare three attributes:  
+     - `pcode` (product code)  
+     - `pname` (product name)  
+     - `price` (product price)  
+   - Create a constructor to initialize these attributes.  
+
+2. **Define the `productt` class (contains the `main` method)**  
+
+3. **Create the first product (`product1`) with predefined values**  
+   - Assign `pcode = 101`, `pname = "crayoon"`, `price = 45`  
+   - Create an object `product1` using the constructor.  
+
+4. **Create the second product (`product2`) with predefined values**  
+   - Assign values manually:  
+     - `pcode = 102`, `pname = "sketch"`, `price = 50`  
+   - Create an object `product2` using the constructor.  
+
+5. **Take user input for the third product (`product3`)**  
+   - Use `Scanner` to get:  
+     - `pcode` from the user  
+     - `pname` from the user  
+     - `price` from the user  
+   - Create `product3` using the constructor with user-input values.  
+
+6. **Print details of all three products**  
+   - Display `pcode`, `pname`, and `price` for `product1`, `product2`, and `product3`.  
+
+7. **Determine the product with the lowest price**  
+   - Compare `price` of `product1`, `product2`, and `product3`.  
+   - If `product1.price` is the lowest, print its details.  
+   - Else if `product2.price` is the lowest, print its details.  
+   - Else, print `product3` details.  
+
+8. **End program execution**.
