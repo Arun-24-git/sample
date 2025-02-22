@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            background-color: #1e1e1e; /* Dark background for contrast */
+            margin: 0;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        .container {
+            position: relative;
+            width: 400px;
+            height: 400px;
+        }
+
+        h2 {
+            position: absolute;
+            width: 120px;
+            height: 120px;
+            line-height: 120px;
+            text-align: center;
+            font-size: 18px;
+            font-family: Arial, sans-serif;
+            font-weight: bold;
+            color: white;
+            border-radius: 50%;
+            text-shadow: 2px 2px 10px rgba(255, 255, 255, 0.6);
+            border: 3px solid rgba(255, 255, 255, 0.5);
+            animation-duration: 3s;
+            animation-iteration-count: infinite;
+            animation-timing-function: linear;
+        }
+
+        /* Programming Language Colors */
+        #python { background: radial-gradient(circle, #FFD43B, #FFE873); animation: floatCenter1 4s infinite linear; left: 20%; top: 30%; }
+        #css { background: radial-gradient(circle, #264de4, #2965f1); animation: floatCenter2 3.5s infinite linear; left: 60%; top: 40%; }
+        #html { background: radial-gradient(circle, #e34c26, #f06529); animation: floatCenter3 4.2s infinite linear; left: 40%; top: 60%; }
+        #java { background: radial-gradient(circle, #f89820, #f8b500); animation: floatCenter4 3.8s infinite linear; left: 10%; top: 50%; }
+        #javascript { background: radial-gradient(circle, #f7df1e, #ffea62); animation: floatCenter5 4.5s infinite linear; left: 70%; top: 50%; color: black; }
+        #php { background: radial-gradient(circle, #4f5b93, #777bb3); animation: floatCenter6 3.2s infinite linear; left: 30%; top: 10%; }
+
+        /* Fast Floating Movements - Stay Around the Middle */
+        @keyframes floatCenter1 {
+            0% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(80px, -60px) scale(1.1); }
+            50% { transform: translate(-90px, 70px) scale(0.9); }
+            75% { transform: translate(60px, -50px) scale(1.1); }
+            100% { transform: translate(0, 0) scale(1); }
+        }
+
+        @keyframes floatCenter2 {
+            0% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(-70px, 90px) scale(0.9); }
+            50% { transform: translate(85px, -60px) scale(1.2); }
+            75% { transform: translate(-75px, 80px) scale(1); }
+            100% { transform: translate(0, 0) scale(1); }
+        }
+
+        @keyframes floatCenter3 {
+            0% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(100px, 50px) scale(1.1); }
+            50% { transform: translate(-80px, -90px) scale(0.9); }
+            75% { transform: translate(60px, 85px) scale(1.2); }
+            100% { transform: translate(0, 0) scale(1); }
+        }
+
+        @keyframes floatCenter4 {
+            0% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(-90px, -100px) scale(1.2); }
+            50% { transform: translate(100px, 90px) scale(0.9); }
+            75% { transform: translate(-110px, 75px) scale(1.1); }
+            100% { transform: translate(0, 0) scale(1); }
+        }
+
+        @keyframes floatCenter5 {
+            0% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(90px, -110px) scale(0.9); }
+            50% { transform: translate(-75px, 100px) scale(1.1); }
+            75% { transform: translate(120px, -80px) scale(1.2); }
+            100% { transform: translate(0, 0) scale(1); }
+        }
+
+        @keyframes floatCenter6 {
+            0% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(-100px, 80px) scale(1.2); }
+            50% { transform: translate(70px, -90px) scale(0.9); }
+            75% { transform: translate(-80px, 100px) scale(1.1); }
+            100% { transform: translate(0, 0) scale(1); }
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h2 id="python">Python 🐍</h2>
+        <h2 id="css">CSS 🎨</h2>
+        <h2 id="html">HTML 🏗</h2>
+        <h2 id="java">Java ☕</h2>
+        <h2 id="javascript">JavaScript ⚡</h2>
+        <h2 id="php">PHP 🐘</h2>
+    </div>
+</body>
+</html>
+
