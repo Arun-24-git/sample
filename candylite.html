@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Candy Crush - Programming Edition</title>
+    <style>
+        body {
+            background-color: #1e1e1e;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+            margin: 0;
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+
+        .game-container {
+            display: grid;
+            grid-template-columns: repeat(6, 80px);
+            grid-template-rows: repeat(6, 80px);
+            gap: 5px;
+            background-color: #333;
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+        }
+
+        .tile {
+            width: 80px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: bold;
+            color: white;
+            border-radius: 10px;
+            cursor: pointer;
+            user-select: none;
+            transition: transform 0.2s ease-in-out, opacity 0.3s ease-in-out;
+        }
+
+        /* Programming Language Colors */
+        .python { background: #FFD43B; color: black; }
+        .css { background: #264de4; }
+        .html { background: #E34C26; }
+        .java { background: #F89820; }
+        .javascript { background: #F7DF1E; color: black; }
+        .php { background: #4F5B93; }
+
+        .hidden {
+            opacity: 0;
+        }
+
+    </style>
+</head>
+<body>
+    <h1>💻 Candy Crush: Programming Edition 💻</h1>
+    <h3>Swap & Match 3+ to Clear Tiles!</h3>
+    <div class="game-container" id="gameBoard"></div>
+
+    <script>
+        const gridSize = 6;
+        const tileTypes = ["python", "css", "html", "java", "javascript", "php"];
+        let gameBoard = [];
+
+        const gameContainer = document.getElementById("gameBoard");
+
+        function createTile(type, row, col) {
+            let tile = document.createElement("div");
+            tile.classList.add("tile", type);
+            tile.dataset.row = row;
+            tile.dataset.col = col;
+            tile.textContent = getEmoji(type);
+            tile.addEventListener("dragstart", dragStart);
+            tile.addEventListener("dragover", dragOver);
+            tile.addEventListener("drop", drop);
+            tile.draggable = true;
+            return tile;
+        }
+
+        function getEmoji(type) {
+            const emojis = {
+                "python": "🐍",
+                "css": "🎨",
+                "html": "🏗",
+                "java": "☕",
+                "javascript": "⚡",
+                "php": "🐘"
+            };
+            return emojis[type];
+        }
+
+        function initializeGame() {
+            gameBoard = [];
+            gameContainer.innerHTML = "";
+
+            for (let row = 0; row < gridSize; row++) {
+                let rowArray = [];
+                for (let col = 0; col < gridSize; col++) {
+                    let type = tileTypes[Math.floor(Math.random() * tileTypes.length)];
+                    let tile = createTile(type, row, col);
+                    gameContainer.appendChild(tile);
+                    rowArray.push(type);
+                }
+                gameBoard.push(rowArray);
+            }
+        }
+
+        let selectedTile = null;
+
+        function dragStart(event) {
+            selectedTile = event.target;
+        }
+
+        function dragOver(event) {
+            event.preventDefault();
+        }
+
+        function drop(event) {
+            let targetTile = event.target;
+            let selectedRow = parseInt(selectedTile.dataset.row);
+            let selectedCol = parseInt(selectedTile.dataset.col);
+            let targetRow = parseInt(targetTile.dataset.row);
+            let targetCol = parseInt(targetTile.dataset.col);
+
+            // Check if swap is valid (only adjacent tiles)
+            if (
+                (Math.abs(selectedRow - targetRow) === 1 && selectedCol === targetCol) ||
+                (Math.abs(selectedCol - targetCol) === 1 && selectedRow === targetRow)
+            ) {
+                swapTiles(selectedTile, targetTile);
+                setTimeout(() => {
+                    checkMatches();
+                }, 200);
+            }
+        }
+
+        function swapTiles(tile1, tile2) {
+            let tempClass = tile1.className;
+            tile1.className = tile2.className;
+            tile2.className = tempClass;
+
+            let tempText = tile1.textContent;
+            tile1.textContent = tile2.textContent;
+            tile2.textContent = tempText;
+        }
+
+        function checkMatches() {
+            let tilesToRemove = [];
+
+            // Check rows for matches
+            for (let row = 0; row < gridSize; row++) {
+                for (let col = 0; col < gridSize - 2; col++) {
+                    let tile1 = document.querySelector(`[data-row="${row}"][data-col="${col}"]`);
+                    let tile2 = document.querySelector(`[data-row="${row}"][data-col="${col + 1}"]`);
+                    let tile3 = document.querySelector(`[data-row="${row}"][data-col="${col + 2}"]`);
+                    if (tile1.className === tile2.className && tile2.className === tile3.className) {
+                        tilesToRemove.push(tile1, tile2, tile3);
+                    }
+                }
+            }
+
+            // Check columns for matches
+            for (let col = 0; col < gridSize; col++) {
+                for (let row = 0; row < gridSize - 2; row++) {
+                    let tile1 = document.querySelector(`[data-row="${row}"][data-col="${col}"]`);
+                    let tile2 = document.querySelector(`[data-row="${row + 1}"][data-col="${col}"]`);
+                    let tile3 = document.querySelector(`[data-row="${row + 2}"][data-col="${col}"]`);
+                    if (tile1.className === tile2.className && tile2.className === tile3.className) {
+                        tilesToRemove.push(tile1, tile2, tile3);
+                    }
+                }
+            }
+
+            // Remove matched tiles and refill grid
+            if (tilesToRemove.length > 0) {
+                tilesToRemove.forEach(tile => {
+                    tile.classList.add("hidden");
+                    setTimeout(() => {
+                        tile.className = "tile";
+                        tile.textContent = "";
+                    }, 300);
+                });
+
+                setTimeout(dropNewTiles, 500);
+            }
+        }
+
+        function dropNewTiles() {
+            for (let col = 0; col < gridSize; col++) {
+                let emptySpaces = 0;
+                for (let row = gridSize - 1; row >= 0; row--) {
+                    let tile = document.querySelector(`[data-row="${row}"][data-col="${col}"]`);
+                    if (tile.textContent === "") {
+                        emptySpaces++;
+                    } else if (emptySpaces > 0) {
+                        let belowTile = document.querySelector(`[data-row="${row + emptySpaces}"][data-col="${col}"]`);
+                        belowTile.className = tile.className;
+                        belowTile.textContent = tile.textContent;
+                        tile.className = "tile";
+                        tile.textContent = "";
+                    }
+                }
+
+                for (let i = 0; i < emptySpaces; i++) {
+                    let tile = document.querySelector(`[data-row="${i}"][data-col="${col}"]`);
+                    let newType = tileTypes[Math.floor(Math.random() * tileTypes.length)];
+                    tile.className = `tile ${newType}`;
+                    tile.textContent = getEmoji(newType);
+                }
+            }
+        }
+
+        initializeGame();
+    </script>
+</body>
+</html>
+
