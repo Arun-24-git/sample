@@ -1,0 +1,17 @@
+avac cpuinfo.java
+ksb@ksb-H410M-S2-V2:~$ java cpuinfo
+enter the processor manufacturer:
+intel
+Enter the number of cores in the processor: 16
+enter the Ram manufacturer:
+kingston
+Enter the RAM memory size: 16
+enter the Price:
+15000    
+
+...Information of processor and RAM....
+Processor manufacturer:intel
+No of cores of processor:16
+Ram memory:16
+Ram manufacturer:kingston
+Price:15000
