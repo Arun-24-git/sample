@@ -1,0 +1,490 @@
+ksb@ksb-H410M-S2-V2:~/ARUNJITH/DBMS$ mongosh --port 27020
+Current Mongosh Log ID:	680a0b84759a0c85b6d861df
+Connecting to:		mongodb://127.0.0.1:27020/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+2.5.0
+Using MongoDB:		7.0.19
+Using Mongosh:		2.5.0
+
+For mongosh info see: https://www.mongodb.com/docs/mongodb-shell/
+
+------
+   The server generated these startup warnings when booting
+   2025-04-24T14:46:48.926+05:30: Access control is not enabled for the database. Read and write access to data and configuration is unrestricted
+------
+
+[direct: mongos] test> sh.addShard("shard1ReplSet/localhost:27017");
+... sh.addShard("shard2ReplSet/localhost:27018");
+... sh.addShard("shard3ReplSet/localhost:27019");
+... 
+{
+  shardAdded: 'shard3ReplSet',
+  ok: 1,
+  '$clusterTime': {
+    clusterTime: Timestamp({ t: 1745488794, i: 17 }),
+    signature: {
+      hash: Binary.createFromBase64('AAAAAAAAAAAAAAAAAAAAAAAAAAA=', 0),
+      keyId: Long('0')
+    }
+  },
+  operationTime: Timestamp({ t: 1745488794, i: 17 })
+}
+[direct: mongos] test> sh.status();
+... 
+shardingVersion
+{ _id: 1, clusterId: ObjectId('680a000e18eda777c293cf5c') }
+---
+shards
+[
+  {
+    _id: 'shard1ReplSet',
+    host: 'shard1ReplSet/localhost:27017',
+    state: 1,
+    topologyTime: Timestamp({ t: 1745488793, i: 2 })
+  },
+  {
+    _id: 'shard2ReplSet',
+    host: 'shard2ReplSet/localhost:27018',
+    state: 1,
+    topologyTime: Timestamp({ t: 1745488794, i: 2 })
+  },
+  {
+    _id: 'shard3ReplSet',
+    host: 'shard3ReplSet/localhost:27019',
+    state: 1,
+    topologyTime: Timestamp({ t: 1745488794, i: 15 })
+  }
+]
+---
+active mongoses
+[ { '7.0.19': 1 } ]
+---
+autosplit
+{ 'Currently enabled': 'yes' }
+---
+balancer
+{
+  'Currently enabled': 'yes',
+  'Failed balancer rounds in last 5 attempts': 0,
+  'Currently running': 'no',
+  'Migration Results for the last 24 hours': 'No recent migrations'
+}
+---
+shardedDataDistribution
+[]
+---
+databases
+[
+  {
+    database: { _id: 'config', primary: 'config', partitioned: true },
+    collections: {}
+  }
+]
+[direct: mongos] test> sh.enableSharding("invoiceDB")
+{
+  ok: 1,
+  '$clusterTime': {
+    clusterTime: Timestamp({ t: 1745488818, i: 9 }),
+    signature: {
+      hash: Binary.createFromBase64('AAAAAAAAAAAAAAAAAAAAAAAAAAA=', 0),
+      keyId: Long('0')
+    }
+  },
+  operationTime: Timestamp({ t: 1745488818, i: 3 })
+}
+[direct: mongos] test> db.customers.createIndex({ city: 1 })
+... 
+city_1
+[direct: mongos] test> sh.shardCollection("invoiceDB.customers", { city: 1 })
+... 
+{
+  collectionsharded: 'invoiceDB.customers',
+  ok: 1,
+  '$clusterTime': {
+    clusterTime: Timestamp({ t: 1745488858, i: 37 }),
+    signature: {
+      hash: Binary.createFromBase64('AAAAAAAAAAAAAAAAAAAAAAAAAAA=', 0),
+      keyId: Long('0')
+    }
+  },
+  operationTime: Timestamp({ t: 1745488858, i: 37 })
+}
+[direct: mongos] test> for (let i = 0; i < 1000; i++) {
+...     db.customers.insert({
+...         name: "Customer" + i,
+...         city: i % 3 === 0 ? "ekm" : i % 3 === 1 ? "tvm" : "kochi"
+...     });
+... }
+... 
+DeprecationWarning: Collection.insert() is deprecated. Use insertOne, insertMany, or bulkWrite.
+{
+  acknowledged: true,
+  insertedIds: { '0': ObjectId('680a0c19759a0c85b6d865c7') }
+}
+[direct: mongos] test> sh.status()
+shardingVersion
+{ _id: 1, clusterId: ObjectId('680a000e18eda777c293cf5c') }
+---
+shards
+[
+  {
+    _id: 'shard1ReplSet',
+    host: 'shard1ReplSet/localhost:27017',
+    state: 1,
+    topologyTime: Timestamp({ t: 1745488793, i: 2 })
+  },
+  {
+    _id: 'shard2ReplSet',
+    host: 'shard2ReplSet/localhost:27018',
+    state: 1,
+    topologyTime: Timestamp({ t: 1745488794, i: 2 })
+  },
+  {
+    _id: 'shard3ReplSet',
+    host: 'shard3ReplSet/localhost:27019',
+    state: 1,
+    topologyTime: Timestamp({ t: 1745488794, i: 15 })
+  }
+]
+---
+active mongoses
+[ { '7.0.19': 1 } ]
+---
+autosplit
+{ 'Currently enabled': 'yes' }
+---
+balancer
+{
+  'Currently enabled': 'yes',
+  'Currently running': 'no',
+  'Failed balancer rounds in last 5 attempts': 0,
+  'Migration Results for the last 24 hours': 'No recent migrations'
+}
+---
+shardedDataDistribution
+[
+  {
+    ns: 'invoiceDB.customers',
+    shards: [
+      {
+        shardName: 'shard1ReplSet',
+        numOrphanedDocs: 0,
+        numOwnedDocuments: 0,
+        ownedSizeBytes: null,
+        orphanedSizeBytes: null
+      }
+    ]
+  },
+  {
+    ns: 'config.system.sessions',
+    shards: [
+      {
+        shardName: 'shard1ReplSet',
+        numOrphanedDocs: 0,
+        numOwnedDocuments: 9,
+        ownedSizeBytes: 891,
+        orphanedSizeBytes: 0
+      }
+    ]
+  }
+]
+---
+databases
+[
+  {
+    database: { _id: 'config', primary: 'config', partitioned: true },
+    collections: {
+      'config.system.sessions': {
+        shardKey: { _id: 1 },
+        unique: false,
+        balancing: true,
+        chunkMetadata: [ { shard: 'shard1ReplSet', nChunks: 1 } ],
+        chunks: [
+          { min: { _id: MinKey() }, max: { _id: MaxKey() }, 'on shard': 'shard1ReplSet', 'last modified': Timestamp({ t: 1, i: 0 }) }
+        ],
+        tags: []
+      }
+    }
+  },
+  {
+    database: {
+      _id: 'invoiceDB',
+      primary: 'shard1ReplSet',
+      partitioned: false,
+      version: {
+        uuid: UUID('18b22823-466a-4bc8-a5da-e4808b546c1e'),
+        timestamp: Timestamp({ t: 1745488818, i: 1 }),
+        lastMod: 1
+      }
+    },
+    collections: {
+      'invoiceDB.customers': {
+        shardKey: { city: 1 },
+        unique: false,
+        balancing: true,
+        chunkMetadata: [ { shard: 'shard1ReplSet', nChunks: 1 } ],
+        chunks: [
+          { min: { city: MinKey() }, max: { city: MaxKey() }, 'on shard': 'shard1ReplSet', 'last modified': Timestamp({ t: 1, i: 0 }) }
+        ],
+        tags: []
+      }
+    }
+  },
+  {
+    database: {
+      _id: 'test',
+      primary: 'shard3ReplSet',
+      partitioned: false,
+      version: {
+        uuid: UUID('d9f4ffd0-82fc-4847-9d7a-96a3db60531a'),
+        timestamp: Timestamp({ t: 1745488845, i: 1 }),
+        lastMod: 1
+      }
+    },
+    collections: {}
+  }
+]
+[direct: mongos] test> sh.status()
+... shardingVersion
+... { _id: 1, clusterId: ObjectId('680a000e18eda777c293cf5c') }
+... ---
+... shards
+... [
+...   {
+...     _id: 'shard1ReplSet',
+...     host: 'shard1ReplSet/localhost:27017',
+...     state: 1,
+...     topologyTime: Timestamp({ t: 1745488793, i: 2 })
+...   },
+...   {
+...     _id: 'shard2ReplSet',
+...     host: 'shard2ReplSet/localhost:27018',
+...     state: 1,
+...     topologyTime: Timestamp({ t: 1745488794, i: 2 })
+...   },
+...   {
+...     _id: 'shard3ReplSet',
+...     host: 'shard3ReplSet/localhost:27019',
+...     state: 1,
+...     topologyTime: Timestamp({ t: 1745488794, i: 15 })
+...   }
+... ]
+... ---
+... active mongoses
+... [ { '7.0.19': 1 } ]
+... ---
+... autosplit
+... { 'Currently enabled': 'yes' }
+... ---
+... balancer
+... {
+...   'Currently enabled': 'yes',
+...   'Currently running': 'no',
+...   'Failed balancer rounds in last 5 attempts': 0,
+...   'Migration Results for the last 24 hours': 'No recent migrations'
+... }
+... ---
+... shardedDataDistribution
+... [
+...   {
+...     ns: 'invoiceDB.customers',
+...     shards: [
+...       {
+...         shardName: 'shard1ReplSet',
+...         numOrphanedDocs: 0,
+...         numOwnedDocuments: 0,
+...         ownedSizeBytes: null,
+...         orphanedSizeBytes: null
+...       }
+...     ]
+...   },
+...   {
+...     ns: 'config.system.sessions',
+...     shards: [
+...       {
+...         shardName: 'shard1ReplSet',
+...         numOrphanedDocs: 0,
+...         numOwnedDocuments: 9,
+...         ownedSizeBytes: 891,
+...         orphanedSizeBytes: 0
+...       }
+...     ]
+...   }
+... ]
+... ---
+... databases
+... [
+...   {
+...     database: { _id: 'config', primary: 'config', partitioned: true },
+...     collections: {
+...       'config.system.sessions': {
+...         shardKey: { _id: 1 },
+...         unique: false,
+...         balancing: true,
+...         chunkMetadata: [ { shard: 'shard1ReplSet', nChunks: 1 } ],
+...         chunks: [
+...           { min: { _id: MinKey() }, max: { _id: MaxKey() }, 'on shard': 'shard1ReplSet', 'last modified': Timestamp({ t: 1, ii: 0 }) }
+...         ],
+...         tags: []
+...       }
+...     }
+...   },
+...   {
+...     database: {
+...       _id: 'invoiceDB',
+...       primary: 'shard1ReplSet',
+...       partitioned: false,
+...       version: {
+...         uuid: UUID('18b22823-466a-4bc8-a5da-e4808b546c1e'),
+...         timestamp: Timestamp({ t: 1745488818, i: 1 }),
+...         lastMod: 1
+...       }
+...     },
+...     collections: {
+...       'invoiceDB.customers': {
+...         shardKey: { city: 1 },
+...         unique: false,
+...         balancing: true,
+...         chunkMetadata: [ { shard: 'shard1ReplSet', nChunks: 1 } ],
+...         chunks: [
+...           { min: { city: MinKey() }, max: { city: MaxKey() }, 'on shard': 'shard1ReplSet', 'last modified': Timestamp({ t: 1, i: 0 }) }
+...         ],
+...         tags: []
+...       }
+...     }
+...   },
+...   {
+...     database: {
+...       _id: 'test',
+...       primary: 'shard3ReplSet',
+...       partitioned: false,
+...       version: {
+...         uuid: UUID('d9f4ffd0-82fc-4847-9d7a-96a3db60531a'),
+...         timestamp: Timestamp({ t: 1745488845, i: 1 }),
+...         lastMod: 1
+...       }
+...     },
+...     collections: {}
+...   }
+... ]
+... sh.status()
+... shardingVersion
+... { _id: 1, clusterId: ObjectId('680a000e18eda777c293cf5c') }
+... ---
+... shards
+... [
+...   {
+...     _id: 'shard1ReplSet',
+...     host: 'shard1ReplSet/localhost:27017',
+...     state: 1,
+...     topologyTime: Timestamp({ t: 1745488793, i: 2 })
+...   },
+...   {
+...     _id: 'shard2ReplSet',
+...     host: 'shard2ReplSet/localhost:27018',
+...     state: 1,
+...     topologyTime: Timestamp({ t: 1745488794, i: 2 })
+...   },
+...   {
+...     _id: 'shard3ReplSet',
+...     host: 'shard3ReplSet/localhost:27019',
+...     state: 1,
+...     topologyTime: Timestamp({ t: 1745488794, i: 15 })
+...   }
+... ]
+... ---
+... active mongoses
+... [ { '7.0.19': 1 } ]
+... ---
+... autosplit
+... { 'Currently enabled': 'yes' }
+... ---
+... balancer
+... {
+...   'Currently enabled': 'yes',
+...   'Currently running': 'no',
+...   'Failed balancer rounds in last 5 attempts': 0,
+...   'Migration Results for the last 24 hours': 'No recent migrations'
+... }
+... ---
+... shardedDataDistribution
+... [
+...   {
+...     ns: 'invoiceDB.customers',
+...     shards: [
+...       {
+...         shardName: 'shard1ReplSet',
+...         numOrphanedDocs: 0,
+...         numOwnedDocuments: 0,
+...         ownedSizeBytes: null,
+...         orphanedSizeBytes: null
+...       }
+...     ]
+...   },
+...   {
+...     ns: 'config.system.sessions',
+...     shards: [
+...       {
+...         shardName: 'shard1ReplSet',
+...         numOrphanedDocs: 0,
+...         numOwnedDocuments: 9,
+...         ownedSizeBytes: 891,
+...         orphanedSizeBytes: 0
+...       }
+...     ]
+...   }
+... ]
+... ---
+... databases
+... [
+...   {
+...     database: { _id: 'config', primary: 'config', partitioned: true },
+...     collections: {
+...       'config.system.sessions': {
+...         shardKey: { _id: 1 },
+...         unique: false,
+...         balancing: true,
+...         chunkMetadata: [ { shard: 'shard1ReplSet', nChunks: 1 } ],
+...         chunks: [
+...           { min: { _id: MinKey() }, max: { _id: MaxKey() }, 'on shard': 'shard1ReplSet', 'last modified': Timestamp({ t: 1, ii: 0 }) }
+...         ],
+...         tags: []
+...       }
+...     }
+...   },
+...   {
+...     database: {
+...       _id: 'invoiceDB',
+...       primary: 'shard1ReplSet',
+...       partitioned: false,
+...       version: {
+...         uuid: UUID('18b22823-466a-4bc8-a5da-e4808b546c1e'),
+...         timestamp: Timestamp({ t: 1745488818, i: 1 }),
+...         lastMod: 1
+...       }
+...     },
+...     collections: {
+...       'invoiceDB.customers': {
+...         shardKey: { city: 1 },
+...         unique: false,
+...         balancing: true,
+...         chunkMetadata: [ { shard: 'shard1ReplSet', nChunks: 1 } ],
+...         chunks: [
+...           { min: { city: MinKey() }, max: { city: MaxKey() }, 'on shard': 'shard1ReplSet', 'last modified': Timestamp({ t: 1, i: 0 }) }
+...         ],
+...         tags: []
+...       }
+...     }
+...   },
+...   {
+...     database: {
+...       _id: 'test',
+...       primary: 'shard3ReplSet',
+...       partitioned: false,
+...       version: {
+...         uuid: UUID('d9f4ffd0-82fc-4847-9d7a-96a3db60531a'),
+...         timestamp: Timestamp({ t: 1745488845, i: 1 }),
+...         lastMod: 1
+...       }
+...     },
+...     collections: {}
+...   }
+... ]
