@@ -1,0 +1,18 @@
+
+<?xml version="1.0"?>
+<sdf version="1.6">
+  <world name="conveyor_world">
+    <include>
+      <uri>model://sun</uri>
+    </include>
+    <include>
+      <uri>model://ground_plane</uri>
+    </include>
+    <!-- Requires conveyor_belt model from gazebo_conveyor_plugin -->
+    <include>
+      <uri>model://conveyor_belt</uri>
+      <name>main_conveyor</name>
+      <pose>0 0 0 0 0 0</pose>
+    </include>
+  </world>
+</sdf>

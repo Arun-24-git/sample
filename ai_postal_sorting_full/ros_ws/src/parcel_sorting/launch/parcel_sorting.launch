@@ -1,0 +1,5 @@
+
+<launch>
+  <node pkg="parcel_sorting" type="web_bridge_node.py" name="web_bridge" output="screen" />
+  <node pkg="parcel_sorting" type="letter_spawner_node.py" name="letter_spawner" output="screen" />
+</launch>

@@ -1,0 +1,12 @@
+
+<package format="2">
+  <name>parcel_sorting</name>
+  <version>0.0.1</version>
+  <description>Simulated parcel sorting via conveyor.</description>
+  <maintainer email="you@example.com">You</maintainer>
+  <license>MIT</license>
+  <exec_depend>rospy</exec_depend>
+  <exec_depend>std_msgs</exec_depend>
+  <exec_depend>gazebo_ros</exec_depend>
+  <exec_depend>gazebo_msgs</exec_depend>
+</package>
