@@ -1,0 +1,56 @@
+
+1️⃣ USERS Table
+| **Field Name** | **Data Type** | **Constraints**                             | **Description**                    |
+| -------------- | ------------- | ------------------------------------------- | ---------------------------------- |
+| user\_id       | INTEGER       | PRIMARY KEY, AUTOINCREMENT                  | Unique ID for each user            |
+| username       | TEXT          | UNIQUE, NOT NULL                            | Username for login                 |
+| password\_hash | TEXT          | NOT NULL                                    | Hashed user password               |
+| role           | TEXT          | NOT NULL, CHECK(role IN ('admin', 'staff')) | Defines user as 'admin' or 'staff' |
+
+
+🔷 2️⃣ POSTAL_ITEMS Table
+
+| **Field Name**  | **Data Type** | **Constraints**                                                 | **Description**                     |
+| --------------- | ------------- | --------------------------------------------------------------- | ----------------------------------- |
+| item\_id        | INTEGER       | PRIMARY KEY, AUTOINCREMENT                                      | Unique ID for each postal item      |
+| image\_path     | TEXT          | NOT NULL                                                        | File path or name of uploaded image |
+| extracted\_text | TEXT          |                                                                 | Full address text extracted by OCR  |
+| pin\_code       | TEXT          | NOT NULL                                                        | Detected 6-digit PIN code           |
+| assigned\_bin   | TEXT          | NOT NULL                                                        | Bin or dispatch zone assigned       |
+| processed\_by   | INTEGER       | NOT NULL, FOREIGN KEY REFERENCES USERS(user\_id)                | User who processed this item        |
+| status\_id      | INTEGER       | NOT NULL, FOREIGN KEY REFERENCES PROCESSING\_STATUS(status\_id) | Current processing status           |
+| processed\_date | DATE          | NOT NULL                                                        | Date of processing                  |
+| processed\_time | TIME          | NOT NULL                                                        | Time of processing                  |
+
+🔷 3️⃣ BIN_MAPPING Table
+| **Field Name** | **Data Type** | **Constraints**            | **Description**                |
+| -------------- | ------------- | -------------------------- | ------------------------------ |
+| bin\_id        | INTEGER       | PRIMARY KEY, AUTOINCREMENT | Unique ID for each bin or zone |
+| pin\_code      | TEXT          | UNIQUE, NOT NULL           | PIN code mapped to this bin    |
+| bin\_name      | TEXT          | NOT NULL                   | Name of bin or dispatch zone   |
+
+
+🔷 4️⃣ ACTIVITY_LOG Table
+| **Field Name** | **Data Type** | **Constraints**                                  | **Description**                 |
+| -------------- | ------------- | ------------------------------------------------ | ------------------------------- |
+| log\_id        | INTEGER       | PRIMARY KEY, AUTOINCREMENT                       | Unique log entry ID             |
+| user\_id       | INTEGER       | NOT NULL, FOREIGN KEY REFERENCES USERS(user\_id) | User who performed the action   |
+| action         | TEXT          | NOT NULL                                         | Description of action performed |
+| log\_date      | DATE          | NOT NULL                                         | Date of action                  |
+| log\_time      | TIME          | NOT NULL                                         | Time of action                  |
+
+🔷 5️⃣ PROCESSING_STATUS Table (Optional but recommended)
+| **Field Name** | **Data Type** | **Constraints**            | **Description**                               |
+| -------------- | ------------- | -------------------------- | --------------------------------------------- |
+| status\_id     | INTEGER       | PRIMARY KEY, AUTOINCREMENT | Unique status ID                              |
+| status\_name   | TEXT          | UNIQUE, NOT NULL           | Status (e.g. Uploaded, OCR Extracted, Sorted) |
+
+
+🔷 6️⃣ EXPORT_LOG Table (Optional)
+| **Field Name** | **Data Type** | **Constraints**                                  | **Description**                  |
+| -------------- | ------------- | ------------------------------------------------ | -------------------------------- |
+| export\_id     | INTEGER       | PRIMARY KEY, AUTOINCREMENT                       | Unique export log ID             |
+| exported\_by   | INTEGER       | NOT NULL, FOREIGN KEY REFERENCES USERS(user\_id) | User who exported the record     |
+| export\_date   | DATE          | NOT NULL                                         | Date of export                   |
+| export\_time   | TIME          | NOT NULL                                         | Time of export                   |
+| file\_path     | TEXT          | NOT NULL                                         | Path or filename of exported PDF |
