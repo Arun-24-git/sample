@@ -1,0 +1,229 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% AI-Based Postal Sorting System - Report
+% Corrected to fix the '&' character error
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[12pt, a4paper]{report}
+
+%========= PACKAGES ===========
+\usepackage{times}
+\usepackage{setspace}
+\usepackage{geometry}
+\usepackage{titlesec}
+\usepackage{microtype}
+\usepackage{parskip} % Removes paragraph indentation and adds space between paragraphs
+\usepackage[colorlinks=true, allcolors=blue]{hyperref} % For clickable links and citations
+\usepackage{enumitem} % For better list control
+
+%========= PAGE SETTINGS ===========
+\geometry{left=1in, right=1in, top=1in, bottom=1in}
+\setstretch{1.5}
+
+%========= TYPOGRAPHY SETTINGS ===========
+\widowpenalty=10000
+\clubpenalty=10000
+
+%========= SECTION FORMATTING ===========
+
+% CHAPTER: Approx. 16pt, Bold, All Caps
+\titleformat{\chapter}[display]
+  {\normalfont\LARGE\bfseries\centering}
+  {CHAPTER \thechapter}
+  {1em}
+  {\MakeUppercase} 
+
+% SECTION: Approx. 14pt, Bold, All Caps
+\titleformat{\section}[block]
+  {\normalfont\Large\bfseries}
+  {\thesection}
+  {1em}
+  {\MakeUppercase}
+  
+% SUBSECTION: 12pt, Bold, Leading Caps
+\titleformat{\subsection}[block]
+  {\normalfont\large\bfseries}
+  {\thesubsection}
+  {1em}
+  {}
+  
+% SUBSUBSECTION: 12pt, Bold, Leading Caps
+\titleformat{\subsubsection}[block]
+  {\normalfont\large\bfseries}
+  {\thesubsubsection}
+  {1em}
+  {}
+
+%========= CUSTOM COMMANDS ===========
+% This line changes the bibliography heading to "REFERENCES"
+\renewcommand{\bibname}{REFERENCES}
+% This line enables numbering for \subsubsection (e.g., 3.5.1.1)
+\setcounter{secnumdepth}{3}
+
+
+%========= BEGIN DOCUMENT ===========
+\begin{document}
+
+%========= CHAPTER 1: INTRODUCTION ===========
+\chapter{INTRODUCTION}
+
+The AI-Based Postal Sorting System is a software solution developed to modernize and automate the traditional postal sorting processes used in post offices to handle letters, parcels, and small items of logistics. Postal services play an indispensable role in facilitating communication, commerce, and administration across the country by ensuring that postal items are efficiently delivered to their intended destinations. However, the conventional method of sorting these items is highly manual, involving staff reading printed addresses, identifying PIN codes, and placing items into their respective bins or dispatch zones. While this process has supported postal operations effectively for decades, it remains labour-intensive, time-consuming, and prone to human errors, particularly during peak operational hours when thousands of items need to be processed quickly.
+
+With recent technological advancements, industries are increasingly adopting Artificial Intelligence (AI) and automation to enhance their operational workflows. Postal systems are no exception, as they require timely delivery and high accuracy to maintain public trust and operational efficiency. The AI-Based Postal Sorting System utilizes Optical Character Recognition (OCR) technology to extract printed address data and combines it with automated sorting logic to categorize items based on their PIN codes. This eliminates the dependency on manual sorting and reduces the possibility of errors while significantly improving the sorting speed. Furthermore, the system provides a web-based platform with an intuitive user interface for postal staff to capture or upload images of letters and parcels, process them, and view sorting results instantly. The integration of an admin dashboard allows tracking and management of all processed items, ensuring transparency, accountability, and operational monitoring within the postal hub. Thus, this project demonstrates the practical application of AI, OCR, and Web technologies to efficiently solve real-world postal sorting challenges.
+
+\section{GENERAL BACKGROUND}
+The Indian postal network is one of the largest in the world, handling millions of letters, documents, and parcels every day across diverse geographic regions. The classification of these postal items is a crucial function performed in branch offices, head post offices, and central distribution hubs to ensure accurate and timely delivery. Traditionally, this process involves staff reading each address label, identifying its destination PIN code, and manually placing it into bins designated for specific regions or delivery zones. The Postal Index Number (PIN) system in India was introduced to simplify and systematise mail sorting and delivery. It is a six-digit code where each digit signifies a hierarchical regional categorisation, helping sort items efficiently from national to local levels.
+
+However, the increasing population, urbanisation, and rapid growth of e-commerce have resulted in exponential growth in postal volumes, creating significant challenges for manual sorting processes. Manual sorting leads to longer processing times, increased fatigue among staff, and a higher chance of misplacement or dispatch errors, especially when dealing with high item volumes daily. Developed countries have addressed this challenge by deploying conveyor-based sorting systems integrated with barcode scanners and AI-based address recognition to automate sorting operations at large postal hubs. However, such infrastructure requires substantial capital investment and technical integration, making it less feasible for regional and rural post offices with budget constraints.
+
+In this context, a software-based AI postal sorting system using OCR technology provides a practical, scalable, and cost-effective solution to enhance postal operations. The proposed system uses Tesseract OCR, an open-source optical character recognition engine, to extract address data from captured or uploaded images of letters and parcels. It then applies regex parsing logic to identify the valid PIN code from the extracted text and maps it to predefined virtual bins or dispatch zones using automated sorting logic. The system further includes tracking and administrative dashboard modules to maintain processing records, monitor operations, and a accountability. This approach not only bridges the gap between manual and fully robotic sorting but also prepares the postal system for future integration with physical automation technologies while enabling students to demonstrate AI applications effectively in real-world service sectors.
+
+\section{OBJECTIVE}
+The main objective of the AI-Based Postal Sorting System project is to develop a robust software application that automates the extraction of printed addresses and PIN codes from postal item images and classifies these items into their respective bins or dispatch zones using AI-based sorting logic. The project aims to design a web-based platform with a user-friendly interface for postal staff to capture real-time images using webcams or upload stored images of letters and parcels for processing. The integrated OCR module extracts the printed address text from these images with high accuracy, while the parsing module identifies the valid six-digit PIN code essential for sorting. The sorting logic module then maps the extracted PIN code to its designated bin or delivery zone based on predefined mapping tables. Furthermore, the system includes a sorting animation module that visually demonstrates the movement of the item into its assigned bin on the screen, emulating an automated sorting conveyor system for effective demonstration. In addition, the system maintains a comprehensive database record of each sorted item, including details such as extracted address, PIN code, assigned bin, date, and processing time. The admin dashboard module enables administrators to monitor and manage these records, view sorting history, and generate reports for operational analysis. Overall, the project seeks to improve the efficiency, accuracy, and management of postal sorting workflows while demonstrating the integration of AI, computer vision, and web technologies in a practical and innovative manner suitable for academic learning and future industrial implementation.
+
+\newpage
+%========= CHAPTER 2: LITERATURE SURVEY ===========
+\chapter{LITERATURE SURVEY}
+
+Postal services globally are undergoing rapid transformation through the integration of Artificial Intelligence (AI) and computer vision technologies to enhance efficiency, accuracy, and reliability in sorting workflows. Velu and Vivekanandan (2010) \cite{velu2010}, in their study Automatic Letter Sorting for Indian Postal Address Recognition System Based on PIN Codes, proposed a postal address recognition and automated sorting system tailored for Indian postal operations. Their approach utilised Connected Component (CC) labelling to segment handwritten numerals on envelopes, followed by classification using Artificial Neural Networks (ANN). To automate physical sorting, they designed barcodes corresponding to PIN codes to be printed on envelopes, enabling barcode scanners and conveyor belt mechanisms with electronic gates to direct letters into designated bins. The system achieved 99.5\% sorting accuracy, demonstrating the feasibility of implementing such automated solutions in large postal hubs. However, the authors acknowledged challenges in scaling this infrastructure to all regional post offices due to the required capital investment and maintenance.
+
+Similarly, Pavithra et al. (2020) \cite{pavithra2020}, in their International Journal of Computer Applications publication titled Recognition of Handwritten and Printed Text using Tesseract OCR Engine, examined the effectiveness of Tesseract OCR for printed and handwritten text recognition. The authors highlighted that Tesseract’s LSTM-based neural network models provide high accuracy for printed text extraction but face limitations with handwritten text unless trained extensively on diverse datasets. Their research emphasised the importance of preprocessing techniques such as grayscale conversion, binarization, and noise reduction to enhance input image quality and recognition performance. They also recommended integrating Tesseract with image processing libraries like OpenCV to improve results, especially in document digitisation, form processing, and postal address extraction applications.
+
+In a related study, Jadhav et al. (2019) \cite{jadhav2019}, published in IRJET, explored the use of machine vision-based automation for postal sorting. Their system employed cameras to capture parcel images and applied OCR techniques to extract destination addresses and other relevant information. The processed data enabled robotic manipulators to sort parcels into appropriate bins, thereby increasing operational efficiency and reducing human errors commonly associated with manual sorting methods. The authors concluded that machine vision-based postal automation aligns with global trends in logistics but noted infrastructural and financial limitations in implementing conveyor-based robotic systems in smaller postal branches, suggesting software simulation as a viable academic and prototype approach.
+
+In a more advanced study, Li et al. (2021) \cite{li2021}, in their IEEE Access paper titled AI-Based Parcel Sorting Using Deep Learning, proposed a robotic sorting framework using multi-task deep learning models to handle cluttered and disorderly stacked parcels efficiently. Their system included a lightweight object detection network optimised through channel-level pruning and dynamic weighting strategies to balance detection speed and accuracy while maintaining a smaller model size. Furthermore, the pose estimation network integrated key point detection to determine optimal grasping positions for robotic arms. Experimental results showed a sorting success rate of 89.7\%, indicating the potential of deep learning in achieving precise and rapid automated parcel sorting in complex logistics environments.
+
+Additionally, Obagbuwa and Mogorosi (2023) \cite{obagbuwa2023}, in their chapter Modeling and Simulation of a Robot Arm with Conveyor Belt Using MATLAB Simulink Model, demonstrated a detailed simulation of a five-degree-of-freedom robotic arm integrated with two conveyor belts for pick-and-place operations. Using MATLAB Simulink and Simscape Multibody, they optimised actuator torque, motor requirements, and mechanical configurations, showcasing how robotic arm modelling and simulation can enhance industrial automation workflows. Their study emphasised the importance of simulation before physical deployment to ensure efficiency, cost-effectiveness, and safety in automation projects.
+
+From the literature reviewed, it is evident that while industrial postal automation leverages robotics, barcodes, and deep learning for high-speed and accurate sorting, software-based OCR and AI sorting systems provide a practical and scalable solution for postal services. These studies demonstrate how integrating AI technologies such as Tesseract OCR, neural networks, object detection models, and simulation frameworks with automated sorting logic can significantly improve operational efficiency and accuracy, paving the way towards fully automated postal and logistics hubs in the future.
+
+
+
+\newpage
+%========= CHAPTER 3: SYSTEM ANALYSIS ===========
+\chapter{SYSTEM ANALYSIS}
+
+\section{EXISTING SYSTEM}
+The existing postal sorting system predominantly relies on manual operations involving human personnel who inspect, interpret, and sort physical mail based on the destination address or pin code written on parcels and envelopes. This method, although functional, is significantly time-consuming, labor-intensive, and error-prone, particularly in high-volume postal centers or logistics hubs handling thousands of items daily.
+In the conventional setup, staff members visually examine each parcel to read the recipient’s address and manually determine the appropriate bin or route for sorting. This process demands constant concentration and accuracy and becomes increasingly inefficient when dealing with poor handwriting, worn-out labels, or damaged packages. Any delay or mistake in reading and interpreting the pin code can result in misrouting, delivery delays, or even lost parcels, affecting customer satisfaction and operational trust.
+Furthermore, this traditional system lacks any form of automation, centralized data storage, or tracking logs, making it difficult to monitor performance metrics, trace past sorting actions, or analyze error patterns. Supervisors are unable to audit the sorting process effectively, as there is no digital record of who handled a parcel, when it was sorted, or where it was directed. This lack of transparency and accountability can lead to inefficiencies, especially in larger networks.
+Another significant limitation is the absence of real-time feedback or error detection mechanisms. If a mistake occurs—such as assigning a parcel to the wrong bin—there is no system to catch or rectify the error immediately. Additionally, staff training in such systems is largely informal and does not leverage digital simulation or visualization, making it harder for new employees to learn or understand operational flow efficiently.
+In terms of reporting, the current system generally depends on manual documentation, paper-based records, or isolated spreadsheets maintained by individual operators. This approach makes it difficult to consolidate data, identify trends, or generate reliable performance summaries for management review.
+Despite some organizations attempting minor digital enhancements—like barcode-based sorting or camera-assisted tracking—many postal offices and small courier services still use this outdated manual model due to budget constraints, lack of infrastructure, or technical know-how. Consequently, these systems struggle to meet modern demands for speed, traceability, and accuracy in mail processing.
+
+\section{PROPOSED SYSTEM}
+The proposed system aims to modernize and automate the process of postal sorting by leveraging advanced technologies such as Optical Character Recognition (OCR), machine learning logic, and real-time data visualization. Traditional postal sorting methods rely heavily on manual labor, making the process time-consuming, error-prone, and inefficient. The developed solution introduces a fully automated pipeline that captures parcel images, extracts address and pin code information using OCR, and sorts items into their respective destination bins based on pin code mappings. This automation significantly enhances sorting accuracy, saves time, and reduces human errors. The system is particularly beneficial for logistics centers and postal departments seeking to improve operational efficiency. By integrating image acquisition, preprocessing, and pin code extraction, the solution ensures faster processing, improved reliability, and greater operational performance.
+
+The AI-based postal sorting system is designed with a role-based access control mechanism that distinguishes between two types of users: Admin and Postal Staff, each with clearly defined responsibilities and interfaces. The Admin plays a supervisory role and is primarily responsible for managing user accounts. This includes adding new staff members, editing existing user details, and deleting staff accounts when necessary. Admins can also view the complete sorting history generated by the postal staff and monitor login activities for administrative oversight. This role ensures controlled access and accountability within the system, maintaining operational security and structured user management.
+
+On the other hand, the Postal Staff interact with the system to carry out the actual sorting process. They can either capture images of letters and parcels in real-time using a webcam or upload existing images from the local system. Once uploaded, the system automatically processes the image and displays the extracted address and pin code using OCR. The staff can then view the extracted details, which are presented in a clean and readable format for verification. A key highlight of the project is the animated visualization that shows the parcel moving towards its designated bin on the screen based on the pin code logic. This real-time feedback not only confirms successful sorting but also enhances user interactivity and system engagement. In addition, Postal Staff can view the contents of each bin, export sorting reports in PDF format, and review previously sorted items through the sorted history section. This structured workflow empowers staff to manage parcel sorting efficiently while ensuring transparency and traceability across all stages of the process.
+
+The core functionality of the system is driven by the integration of Optical Character Recognition (OCR), specifically using the Tesseract OCR engine, which is capable of recognizing both printed and handwritten text with high accuracy. To ensure reliable extraction of address and pin code information, the system performs a series of image preprocessing steps such as grayscale conversion, binarization, thresholding, and noise removal. These processes enhance the clarity and contrast of the text regions, preparing the image for more accurate OCR processing. After extracting the complete address, the system applies pattern recognition logic to isolate and validate the pin code, ensuring accurate identification regardless of its position or format within the text. One of the standout features of the system is the real-time animation-based sorting, which visually simulates the movement of a parcel toward its respective bin based on the extracted pin code. This dynamic visualization not only provides immediate confirmation of successful sorting but also enhances the overall user experience, making the process interactive, transparent, and easy to understand. The combined use of OCR for intelligent data extraction and animated feedback for visual tracking forms the foundation of the system’s smart and automated postal sorting capabilities.
+
+The proposed AI-based postal sorting system offers a robust, scalable, and user-friendly solution to overcome the limitations of traditional manual sorting. By combining OCR-driven address extraction, intelligent pin code-based classification, animated visualization, and structured data storage, the system significantly improves the speed, accuracy, and traceability of postal operations. Its design ensures clear role-based access, smooth user workflows, and efficient handling of both successful and failed sorting attempts. Looking ahead, the system can be further enhanced with physical automation components such as robotic arms and conveyor belt mechanisms, enabling seamless integration of software and hardware for fully autonomous sorting operations. The addition of barcode scanning, advanced deep learning-based recognition models, and real-time item tracking can further optimize performance and expand the system’s applicability in larger-scale logistics centers and high-volume sorting environments.
+
+\section{MODULE DESCRIPTION}
+
+\subsection{OCR and Address Extraction Module}
+The OCR and Address Extraction Module is the core AI processing unit of the postal sorting system. It processes each uploaded or captured image of letters and parcels using Tesseract OCR to accurately extract printed address details from the item. This includes reading the recipient's name, locality, city, and most importantly, the 6-digit PIN code required for sorting. Once the text is extracted, the module cleans and parses it using regular expressions to identify the relevant address components in a structured manner. Implemented using pytesseract within the Flask backend, this module ensures high accuracy in address recognition and efficient data extraction without relying on advanced NLP models, enabling seamless automated sorting workflows.
+
+\subsection{Sorting and Mapping Module}
+The Sorting and Mapping Module is responsible for the classification and decision-making process within the system. After receiving the extracted PIN code from the OCR module, it maps this PIN code to a predefined virtual bin or dispatch zone based on a configured sorting logic table. Each PIN corresponds to a specific delivery region or zone, and the system uses this mapping to determine the correct bin assignment for the item. This emulates how real postal sorting machines classify items into physical bins or conveyors for dispatch preparation. The module is implemented using Python dictionaries for static mappings or dynamic database lookups, ensuring fast, reliable, and flexible sorting operations adaptable to changes in regional postal assignments.
+
+\subsection{Tracking \& Admin Dashboard Module}
+The Tracking \& Admin Dashboard Module serves as a vital component for comprehensive tracking, monitoring, and administrative control over all postal items processed within the system. This module logs detailed records of each sorted item, including date and time of processing, extracted address text, PIN code, assigned bin or dispatch zone, and the processing user, storing this data securely in a Mysql database for future reference. It features a user-friendly admin dashboard that displays these records in a structured, searchable, and filterable table, enabling administrators to track each postal item's sorting history, verify operational accuracy, and ensure accountability across all workflows. Additionally, the module provides functionalities for filtering records by date or PIN code, generating operational reports, and monitoring daily performance, which are essential for audits and management decisions. This module is implemented using Flask for backend management, HTML templates and Bootstrap for the dashboard interface, and MYsql for database operations, ensuring robustness and efficiency in managing postal sorting activities.
+
+\section{FEASIBILITY STUDY}
+The feasibility study assesses the practicality of implementing the postal sorting automation system using OCR (Optical Character Recognition) and image processing. It considers operational, technical, and economic factors to determine whether the system can be successfully developed, deployed, and used in real-world postal services.
+
+\subsection{Operational Feasibility}
+The proposed system simplifies the existing manual postal sorting process by offering a simulated web-based platform that utilizes OCR for automated image-based sorting. This removes dependency on physical sorting infrastructure and human classification efforts. Users (postal staff) can upload or capture parcel images, which the system automatically processes to extract address and PIN code data.
+
+The user interface is intuitive and easy to navigate, making it accessible even for non-technical staff. Role-based authentication (Admin and Staff) ensures that control and operational duties are well-managed and securely distributed. Given the reduced manual workload, improved accuracy, and increased transparency, the system is likely to be readily accepted by end-users. Furthermore, since it replicates sorting logic visually, it is suitable for both practical use and educational training.
+
+\subsection{Technical Feasibility}
+The project is technically feasible and relies entirely on open-source, lightweight technologies. The backend is powered by Python Flask, a framework known for its speed and scalability, while the frontend is built with HTML, CSS, Bootstrap, and JavaScript to ensure a responsive interface. For OCR, the system uses the Tesseract engine along with OpenCV for image preprocessing—both well-established tools in the field of computer vision.
+
+The database layer is handled by MySQL, a reliable and widely adopted relational database system. These technologies are compatible with standard computer hardware, requiring no specialized setup. The architecture supports fast development cycles, smooth deployment, and easy scalability. Given the maturity and community support of the chosen tools, there are no significant technical barriers to project implementation.
+
+\subsection{Economic Feasibility}
+The economic feasibility of the system is highly favorable. All software components (Tesseract, Flask, MySQL, OpenCV, etc.) are open-source and do not involve any licensing costs. The system does not require costly hardware or industrial postal sorters; instead, it emulates the sorting process through software-based animations. This makes it particularly well-suited for regional post offices or training institutions with limited budgets.
+
+By automating the sorting process, the system reduces labor dependency and long-term operational costs. It is a sustainable and affordable alternative to conveyor-based solutions, offering a realistic simulation environment that can enhance decision-making, training, and academic learning. This ensures not only a cost-effective deployment but also long-term economic viability.
+
+\section{SYSTEM ENVIRONMENT}
+This section outlines the system requirements necessary for developing and deploying the proposed automated postal sorting system. It includes both developer and user environments, ensuring seamless functioning during implementation and usage.
+
+\subsection{Developer Requirements}
+\subsubsection{Hardware Requirements}
+To support the development and testing of the system, the following hardware configuration is recommended:
+\begin{itemize}
+    \item Processor: Intel Core i3 or higher (quad-core)
+    \item RAM: 8 GB or above
+    \item Storage: Minimum 500 GB Hard Disk Drive or SSD (for faster processing)
+\end{itemize}
+
+\subsubsection{Software Requirements}
+The system will be developed using open-source and widely supported tools. The required software stack includes:
+\begin{itemize}
+    \item Operating System: Windows 10 / Linux (Ubuntu 20.04 or above)
+    \item Front-End Technologies: HTML5, CSS, JavaScript,Bootstrap
+    \item Back-End Framework: Python Flask
+    \item Image Processing Library: OpenCV
+    \item Optical Character Recognition Engine: Tesseract OCR
+    \item Database: MySQL
+    \item IDE / Code Editor: Visual Studio Code / PyCharm
+    \item Web Browser: Google Chrome or Mozilla Firefox (for testing and UI validation)
+\end{itemize}
+
+\subsection{User Requirements}
+To access the system through the front-end interface and mobile-friendly views, the following user-level setup is sufficient:
+\begin{itemize}
+    \item Any standard device: Laptop, or Desktop
+    \item Minimum screen resolution: 1024×768 pixels
+    \item Browser Compatibility: Chrome, Firefox, or Edge (latest version)
+    \item Internet Connection: Stable connection (at least 1 Mbps recommended)
+\end{itemize}
+
+\section{ACTORS AND ROLES}
+\subsection{Admin}
+\begin{itemize}
+    \item Logs into the system to access the admin dashboard
+    \item Manages postal staff (add, edit, delete users)
+    \item Views complete sorted history of postal items
+    \item Applies filters to view specific history records
+\end{itemize}
+
+\subsection{Postal Staff}
+\begin{itemize}
+    \item Logs into the system
+    \item Uploads or captures images of postal items
+    \item Reviews uploaded images before processing
+    \item Views extracted address and PIN code details
+    \item Manually enters or corrects PIN code if not detected or invalid
+    \item Views animated sorting process of items
+    \item Checks contents of virtual sorting bins
+    \item Exports bin contents as PDF
+    \item Views daily sorted item history
+\end{itemize}
+
+%========= REFERENCES (Moved to be after Chapter 2) ===========
+\begin{thebibliography}{99}
+
+\bibitem{velu2010}
+Velu, C. M., \& Vivekanandan, P. (2010). Automatic letter sorting for Indian Postal Address Recognition System based on PIN codes. \textit{Journal of Internet and Information Systems}, 1(1), 6-15.
+
+\bibitem{pavithra2020}
+Pavithra, K., et al. (2020). Recognition of Handwritten and Printed Text using Tesseract OCR Engine. \textit{International Journal of Computer Applications}, 176(22), 25-29.
+
+\bibitem{jadhav2019}
+Jadhav, R., et al. (2019). Postal Sorting Automation using Machine Vision. \textit{International Research Journal of Engineering and Technology (IRJET)}, 6(2), 1123-1127.
+
+\bibitem{li2021}
+Li, X., et al. (2021). AI-Based Parcel Sorting Using Deep Learning. \textit{IEEE Access}, 9, 112432-112440.
+
+\bibitem{obagbuwa2023}
+Obagbuwa, I. C., \& Mogorosi, K. B. (2023). Modeling and Simulation of a Robot Arm with Conveyor Belt Using MATLAB Simulink Model. Chapter in \textit{Advances in Intelligent Systems and Computing}, DOI: 10.1007/978-3-031-27499-2\_56.
+
+\end{thebibliography}
+
+\end{document}
