@@ -1,0 +1,78 @@
+PART A (Short Questions)
+
+Explain about Resource Management in IoT.
+
+Define Caching technique.
+
+Write short note on TinyOS.
+
+List the Applications of Fog Computing.
+
+Discuss about computation offloading in IoT.
+
+Describe the two dominant IoT architectures.
+
+What are the advantages of Fog computing?
+
+List out and explain the requirements that are motivated the design of TinyOS.
+
+Explain all active threats in IoT Security.
+
+Write all the advantages associated with Fog Computing.
+
+Explain CoAP. List out the advantages of CoAP.
+
+Explain the categories of protocols in IoT.
+
+Discuss some Applications of IoT in real life scenario.
+
+Compare the features of Cloud and Fog approaches in current data-analytics.
+
+Explain the Inverse Pyramid for Polyglot Programming.
+
+Explain CoAP web-transfer protocol and its advantages when compared with HTTP.
+
+PART B (Module-wise Questions)
+Module I
+
+Explain about Internet of Things. Illustrate the different Applications of IoT.
+OR
+
+With the help of neat diagram explain about the Open IoT Architecture for IoT/Cloud Convergence.
+
+Draw and explain the state diagram of Open IoT Services life cycle.
+OR
+
+What are the major elements of IoT architecture for IoT/cloud convergence?
+
+With the help of neat diagram explain OpenIoT Architecture for IoT/Cloud Convergence.
+OR
+
+With the help of neat diagram explain state diagram of OpenIoT services Lifecycle.
+
+Explain the taxonomy of resource management in IoT.
+OR
+
+Draw and explain the state diagram of the Open IoT service life cycle.
+
+Module II
+
+Explain Fog Computing Reference Architecture with the help of relevant diagram.
+OR
+
+Explain the importance of Fog Computing in IoT Applications.
+
+Explain the two types of components in nesC.
+OR
+
+Explain Fog reference architecture.
+
+Draw and explain Fog Computing Reference Architecture. Illustrate the services required to achieve Fog Computing.
+OR
+
+Explain the minimum set of features to be fulfilled by the programming frameworks for IoT.
+
+Explain embedded device programming languages.
+OR
+
+Explain reference architecture of fog.
