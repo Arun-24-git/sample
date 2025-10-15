@@ -1,0 +1,664 @@
+import os
+import re
+from datetime import date
+from functools import wraps
+
+import cv2
+import easyocr
+import mysql.connector
+import numpy as np
+from flask import (Flask, flash, jsonify, make_response, redirect,
+                   render_template, request, session, url_for, send_from_directory)
+from mysql.connector import Error
+from werkzeug.utils import secure_filename
+from fpdf import FPDF
+
+# --- Application Setup ---
+app = Flask(__name__)
+app.secret_key = 'a_very_secure_and_random_secret_key_for_sessions'
+UPLOAD_FOLDER = 'uploads'
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+
+# --- Database Configuration ---
+DB_CONFIG = {
+    'host': 'localhost',
+    'user': 'root',
+    'password': 'kmc24-mca-2008',
+    'database': 'postal'
+}
+
+# --- OCR Initialization ---
+print("Loading EasyOCR model into memory...")
+try:
+    OCR_READER = easyocr.Reader(['en'], gpu=False)
+    print("EasyOCR model loaded successfully.")
+except Exception as e:
+    OCR_READER = None
+    print(f"CRITICAL ERROR: Failed to load EasyOCR model: {e}")
+
+# --- Helper Functions and Decorators ---
+def get_db_connection():
+    try:
+        return mysql.connector.connect(**DB_CONFIG)
+    except Error as e:
+        print(f"Database connection error: {e}")
+        return None
+
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+def process_image_for_address(image_path):
+    if OCR_READER is None: return "N/A", "N/A", "Error: OCR model is not loaded."
+    try:
+        img = cv2.imread(image_path)
+        gray_img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        results = OCR_READER.readtext(gray_img, detail=0, paragraph=False)
+        extracted_text = " ".join(results)
+        if not extracted_text.strip(): return "No text could be extracted.", "Not Found", "Success"
+        pincode = "Not Found"
+        match = re.search(r'\b\d{6}\b', extracted_text)
+        if match:
+            pincode = match.group(0)
+        else:
+            cleaned_text = re.sub(r'\D', '', extracted_text)
+            pincodes_found = re.findall(r'\d{6}', cleaned_text)
+            if pincodes_found:
+                pincode = pincodes_found[-1]
+        return extracted_text.strip(), pincode, "Success"
+    except Exception as e:
+        print(f"CRITICAL ERROR in process_image_for_address for image {image_path}: {e}")
+        return "Error during processing", "Error", f"A critical failure occurred: {e}"
+
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if 'user_id' not in session:
+            flash('You must be logged in to view this page.', 'warning')
+            return redirect(url_for('login'))
+        return f(*args, **kwargs)
+    return decorated_function
+
+def role_required(required_role):
+    def decorator(f):
+        @wraps(f)
+        def wrapper(*args, **kwargs):
+            if session.get('role') != required_role:
+                flash(f'Access denied. You need to be an {required_role}.', 'danger')
+                if 'role' in session: return redirect(url_for(f"{session['role']}_home"))
+                return redirect(url_for('login'))
+            return f(*args, **kwargs)
+        return wrapper
+    return decorator
+
+@app.after_request
+def add_header_no_cache(response):
+    response.headers['Cache-Control'] = 'no-store, no-cache, must-revalidate, post-check=0, pre-check=0, max-age=0'
+    response.headers['Pragma'] = 'no-cache'
+    response.headers['Expires'] = '-1'
+    return response
+
+# --- Public Routes ---
+@app.route('/')
+def index(): return render_template('index.html')
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password_candidate = request.form['password']
+        conn = get_db_connection()
+        if not conn:
+            flash('Database service is currently unavailable.', 'danger')
+            return render_template('login.html')
+        cursor = conn.cursor(dictionary=True)
+        try:
+            query = """
+                SELECT l.user_id, l.username, l.password, l.role, s.staff_name, s.status, s.staff_id
+                FROM login l
+                JOIN staff s ON l.staff_id = s.staff_id
+                WHERE l.username = %s
+            """
+            cursor.execute(query, (username,))
+            user = cursor.fetchone()
+        finally:
+            cursor.close()
+            conn.close()
+        
+        if user and user['password'] == password_candidate:
+            if user['role'] == 'staff' and user.get('status') != 'active':
+                flash('Your account is inactive. Please contact an administrator.', 'danger')
+                return redirect(url_for('login'))
+            
+            session.clear()
+            session['user_id'] = user['user_id']
+            session['username'] = user['username']
+            session['role'] = user['role']
+            session['name'] = user['staff_name']
+            session['staff_id'] = user['staff_id']
+            flash(f'Welcome back, {session["name"]}!', 'success')
+            if user['role'] == 'admin':
+                return redirect(url_for('admin_home'))
+            else:
+                return redirect(url_for('staff_home'))
+        else:
+            flash('Invalid username or password.', 'danger')
+            return redirect(url_for('login'))
+    return render_template('login.html')
+
+@app.route('/logout')
+def logout():
+    session.clear()
+    flash('You have been successfully logged out.', 'success')
+    resp = make_response(redirect(url_for('login')))
+    resp.set_cookie('session', '', expires=0)
+    return resp
+
+# --- Admin Routes ---
+@app.route('/admin/home')
+@login_required
+@role_required('admin')
+def admin_home(): return render_template('admin_home.html', user_name=session.get('name'))
+
+@app.route('/admin/manage-staff', methods=['GET', 'POST'])
+@login_required
+@role_required('admin')
+def manage_staff():
+    conn = get_db_connection()
+    if not conn: flash('Database service is currently unavailable.', 'danger'); return redirect(url_for('admin_home'))
+    cursor = conn.cursor(dictionary=True)
+    if request.method == 'POST':
+        staff_name = request.form['staff_name'].strip()
+        phone = request.form['phone'].strip()
+        username = request.form['username'].strip()
+        password = request.form['password']
+        errors = []
+        if not re.match(r"^[a-zA-Z\s]{2,50}$", staff_name): errors.append("Full Name must be 2-50 characters.")
+        if not re.match(r"^\d{10,13}$", phone): errors.append("Phone Number must be 10-13 digits.")
+        if not re.match(r"^[a-zA-Z0-9_]{4,20}$", username): errors.append("Username must be 4-20 characters.")
+        if len(password) < 6: errors.append("Password must be at least 6 characters long.")
+        if errors:
+            for error in errors: flash(error, 'danger')
+        else:
+            try:
+                cursor.execute("SELECT username FROM login WHERE username = %s", (username,))
+                if cursor.fetchone():
+                    flash(f'Username "{username}" already exists.', 'danger')
+                else:
+                    cursor.execute("SELECT phone FROM staff WHERE phone = %s", (phone,))
+                    if cursor.fetchone():
+                        flash(f'Phone number "{phone}" is already in use.', 'danger')
+                    else:
+                        cursor.execute("INSERT INTO staff (staff_name, phone) VALUES (%s, %s)", (staff_name, phone))
+                        new_staff_id = cursor.lastrowid
+                        cursor.execute("INSERT INTO login (username, password, role, staff_id) VALUES (%s, %s, 'staff', %s)", (username, password, new_staff_id))
+                        conn.commit()
+                        flash(f'Staff member {staff_name} added successfully!', 'success')
+                        return redirect(url_for('manage_staff'))
+            except Error as e:
+                conn.rollback()
+                flash(f'Failed to add staff: {e}', 'danger')
+    try:
+        cursor.execute("SELECT s.staff_id, s.staff_name, s.phone, s.status, s.joined_date, l.username FROM staff s JOIN login l ON s.staff_id = l.staff_id WHERE l.role = 'staff' ORDER BY s.joined_date DESC")
+        staff_list = cursor.fetchall()
+    finally:
+        cursor.close()
+        conn.close()
+    return render_template('manage_staff.html', staff_list=staff_list)
+
+@app.route('/admin/update_staff_status/<int:staff_id>', methods=['POST'])
+@login_required
+@role_required('admin')
+def update_staff_status(staff_id):
+    new_status = request.form.get('status')
+    if new_status not in ['active', 'inactive']:
+        flash('Invalid status provided.', 'danger')
+        return redirect(url_for('manage_staff'))
+    conn = get_db_connection()
+    if not conn:
+        flash('Database connection failed.', 'danger')
+        return redirect(url_for('manage_staff'))
+    cursor = conn.cursor()
+    try:
+        cursor.execute("UPDATE staff SET status = %s WHERE staff_id = %s", (new_status, staff_id))
+        conn.commit()
+        flash('Staff status updated successfully.', 'success')
+    except Error as e:
+        conn.rollback()
+        flash(f'Failed to update status. Error: {e}', 'danger')
+    finally:
+        cursor.close()
+        conn.close()
+    return redirect(url_for('manage_staff'))
+
+@app.route('/admin/manage-bins', methods=['GET', 'POST'])
+@login_required
+@role_required('admin')
+def manage_bins():
+    conn = get_db_connection()
+    if not conn: flash('Database service is currently unavailable.', 'danger'); return redirect(url_for('admin_home'))
+    cursor = conn.cursor(dictionary=True)
+    if request.method == 'POST':
+        pin_value = request.form.get('pin').strip()
+        if not pin_value or not pin_value.isdigit() or len(pin_value) != 6:
+            flash('You must provide a valid 6-digit pincode.', 'danger')
+        else:
+            try:
+                bin_name = f"Bin {pin_value}"
+                cursor.execute("INSERT INTO bin (bin_name, pin) VALUES (%s, %s)", (bin_name, pin_value))
+                conn.commit()
+                flash(f'Successfully created {bin_name}!', 'success')
+            except mysql.connector.IntegrityError:
+                flash(f'A bin for pincode "{pin_value}" already exists.', 'danger')
+            except Error as e:
+                flash(f'A database error occurred: {e}', 'danger')
+        return redirect(url_for('manage_bins'))
+    try:
+        cursor.execute("SELECT bin_id, bin_name, pin FROM bin ORDER BY pin ASC")
+        bins = cursor.fetchall()
+    except Error as e:
+        flash(f'Could not retrieve bins: {e}', 'danger')
+        bins = []
+    finally:
+        cursor.close()
+        conn.close()
+    return render_template('manage_bins.html', bins=bins)
+
+@app.route('/admin/delete-bin/<int:bin_id>', methods=['POST'])
+@login_required
+@role_required('admin')
+def delete_bin(bin_id):
+    conn = get_db_connection()
+    if not conn: flash('Database connection failed.', 'danger'); return redirect(url_for('manage_bins'))
+    cursor = conn.cursor()
+    try:
+        cursor.execute("DELETE FROM sorted_item WHERE bin_id = %s", (bin_id,))
+        cursor.execute("DELETE FROM bin WHERE bin_id = %s", (bin_id,))
+        conn.commit()
+        flash('Bin deleted successfully.', 'success')
+    except Error as e:
+        conn.rollback()
+        flash(f'Failed to delete bin. Error: {e}', 'danger')
+    finally:
+        cursor.close()
+        conn.close()
+    return redirect(url_for('manage_bins'))
+
+@app.route('/admin/history', methods=['GET'])
+@login_required
+@role_required('admin')
+def admin_sorted_history():
+    conn = get_db_connection()
+    if not conn:
+        flash('Database service is currently unavailable.', 'danger')
+        return render_template('admin_history.html', items=[], today_date=date.today().isoformat())
+    cursor = conn.cursor(dictionary=True)
+    items = []
+    from_date = request.args.get('from_date')
+    to_date = request.args.get('to_date')
+    search_term = request.args.get('search', '').strip()
+    try:
+        base_query = """
+            SELECT p.pincode, b.bin_name, s.staff_name, si.sorted_time, p.status
+            FROM sorted_item si
+            JOIN parcel p ON si.parcel_id = p.parcel_id
+            JOIN bin b ON si.bin_id = b.bin_id
+            JOIN staff s ON si.staff_id = s.staff_id
+        """
+        conditions = []
+        params = []
+        if from_date:
+            conditions.append("DATE(si.sorted_time) >= %s")
+            params.append(from_date)
+        if to_date:
+            conditions.append("DATE(si.sorted_time) <= %s")
+            params.append(to_date)
+        if search_term:
+            conditions.append("(s.staff_name LIKE %s OR p.pincode LIKE %s)")
+            params.append(f"%{search_term}%")
+            params.append(f"%{search_term}%")
+        if conditions:
+            base_query += " WHERE " + " AND ".join(conditions)
+        base_query += " ORDER BY si.sorted_time DESC"
+        cursor.execute(base_query, tuple(params))
+        items = cursor.fetchall()
+    except Error as e:
+        flash(f'An error occurred while fetching history: {e}', 'danger')
+    finally:
+        cursor.close()
+        conn.close()
+    return render_template(
+        'admin_history.html',
+        items=items,
+        from_date=from_date,
+        to_date=to_date,
+        search_term=search_term,
+        today_date=date.today().isoformat()
+    )
+
+# --- Staff Routes ---
+@app.route('/staff/home')
+@login_required
+@role_required('staff')
+def staff_home(): return render_template('staff_home.html', user_name=session.get('name'))
+
+@app.route('/staff/upload')
+@login_required
+@role_required('staff')
+def upload_capture(): return render_template('upload_capture.html')
+
+@app.route('/staff/process_queue', methods=['POST'])
+@login_required
+@role_required('staff')
+def process_queue():
+    uploaded_files = request.files.getlist('images[]')
+    processing_results = []
+    if not uploaded_files or uploaded_files[0].filename == '': return jsonify({'error': 'No files were provided for processing.'}), 400
+    for file in uploaded_files:
+        original_filename = file.filename or "captured_image.jpg"
+        result_entry = {'original_filename': original_filename}
+        if file and allowed_file(original_filename):
+            unique_filename = f"{os.path.splitext(secure_filename(original_filename))[0]}_{os.urandom(8).hex()}.jpg"
+            save_path = os.path.join(app.config['UPLOAD_FOLDER'], unique_filename)
+            try:
+                file.save(save_path)
+                address, pincode, status_msg = process_image_for_address(save_path)
+                result_entry.update({'image_path': unique_filename, 'extracted_address': address, 'extracted_pincode': pincode, 'status': status_msg})
+            except Exception as proc_error:
+                result_entry.update({'status': f'Error: Could not process file: {proc_error}'})
+        else:
+            result_entry.update({'status': 'Error: Invalid file type'})
+        processing_results.append(result_entry)
+    return jsonify(processing_results)
+
+# --- Animation Routes ---
+@app.route('/staff/sorting-animation')
+@login_required
+@role_required('staff')
+def sorting_animation():
+    parcels_data = session.pop('parcels_data', [])
+    bins_map = session.pop('bins_map', {})
+    return render_template('animation.html', parcels_data=parcels_data, bins_map=bins_map)
+
+@app.route('/uploads/<path:filename>')
+def uploaded_file(filename):
+    return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
+
+
+# --- ========================================================= ---
+# --- FINAL, CLEANED, AND CORRECTED finalize_and_sort ---
+# --- ========================================================= ---
+@app.route('/staff/finalize_and_sort', methods=['POST'])
+@login_required
+@role_required('staff')
+def finalize_and_sort():
+    data = request.get_json()
+    parcels_data = data.get('parcels')
+    staff_id = session.get('staff_id')
+
+    if not parcels_data:
+        return jsonify({'success': False, 'message': 'No parcel data provided.'}), 400
+
+    conn = get_db_connection()
+    if not conn:
+        return jsonify({'success': False, 'message': 'Database service is unavailable.'}), 500
+
+    cursor = conn.cursor(dictionary=True)
+    
+    try:
+        cursor.execute("SELECT bin_id, pin FROM bin")
+        bins_map_for_db = {str(bin_rule['pin']): bin_rule['bin_id'] for bin_rule in cursor.fetchall()}
+    except Error as e:
+        cursor.close()
+        conn.close()
+        print(f"Error fetching bin map: {e}") # Log error
+        return jsonify({'success': False, 'message': f'Could not fetch bin rules: {e}'}), 500
+
+    # The entire batch of parcels will be processed in a single database transaction.
+    # This is much safer and more reliable.
+    try:
+        # Loop through all parcels and perform the database insertions.
+        for parcel in parcels_data:
+            image_path = parcel.get('image_path')
+            raw_pincode_str = parcel.get('pincode')
+            address = parcel.get('address')
+            
+            pincode_str = raw_pincode_str.strip() if raw_pincode_str else ""
+            
+            is_sortable = pincode_str and pincode_str in bins_map_for_db
+            parcel_status = 'binned' if is_sortable else 'unsortable'
+            
+            sql_insert_parcel = "INSERT INTO parcel (image_path, staff_id, pincode, full_address, status) VALUES (%s, %s, %s, %s, %s)"
+            cursor.execute(sql_insert_parcel, (image_path, staff_id, pincode_str or None, address, parcel_status))
+            new_parcel_id = cursor.lastrowid
+
+            if is_sortable:
+                bin_id = bins_map_for_db[pincode_str]
+                cursor.execute("INSERT INTO sorted_item (parcel_id, staff_id, bin_id) VALUES (%s, %s, %s)", (new_parcel_id, staff_id, bin_id))
+
+        # If the loop completes without any errors, commit all changes to the database.
+        conn.commit()
+
+    except Error as e:
+        # If any error occurs during the loop, roll back all changes from this batch.
+        conn.rollback()
+        print(f"DATABASE TRANSACTION FAILED: {e}") # Log the specific error
+    
+    finally:
+        # Always close the cursor and connection.
+        cursor.close()
+        conn.close()
+
+    session['parcels_data'] = parcels_data
+    session['bins_map'] = bins_map_for_db
+
+    return jsonify({'success': True, 'redirect_url': url_for('sorting_animation')})
+
+
+# --- PDF Helper Class and Other Staff Routes ---
+class PDF(FPDF):
+    def header(self):
+        self.set_font('Arial', 'B', 14)
+        self.cell(0, 10, 'PostalAI Bin Manifest', 0, 1, 'C')
+        self.ln(5)
+    def footer(self):
+        self.set_y(-15)
+        self.set_font('Arial', 'I', 8)
+        self.cell(0, 10, f'Page {self.page_no()}', 0, 0, 'C')
+    def create_table(self, data, bin_name):
+        self.set_font('Arial', 'B', 12)
+        self.cell(0, 10, f'Contents for: {bin_name}', 0, 1, 'L')
+        self.ln(5)
+        col_widths = [15, 125, 40]
+        headers = ['SL. NO', 'Address', 'Pincode']
+        line_height = 8
+        self.set_font('Arial', 'B', 10)
+        for i, header in enumerate(headers):
+            self.cell(col_widths[i], 10, header, 1, 0, 'C')
+        self.ln()
+        self.set_font('Arial', '', 10)
+        if not data:
+            self.cell(sum(col_widths), 10, 'This bin is currently empty.', 1, 1, 'C')
+        else:
+            for i, row in enumerate(data):
+                sl_no_text = str(i + 1)
+                address_text = str(row.get('full_address', 'N/A'))
+                pincode_text = str(row.get('pincode', 'N/A'))
+                words = address_text.split(' ')
+                lines = ['']
+                for word in words:
+                    current_line = lines[-1]
+                    if self.get_string_width(current_line + ' ' + word) < col_widths[1] - 4:
+                        lines[-1] += ' ' + word
+                    else:
+                        lines.append(word)
+                lines = [line.strip() for line in lines]
+                num_lines = len(lines)
+                row_height = max(line_height, num_lines * line_height)
+                if self.get_y() + row_height > self.page_break_trigger:
+                    self.add_page(self.cur_orientation)
+                    self.set_font('Arial', 'B', 10)
+                    for k, header in enumerate(headers):
+                        self.cell(col_widths[k], 10, header, 1, 0, 'C')
+                    self.ln()
+                    self.set_font('Arial', '', 10)
+                x_start = self.get_x()
+                y_start = self.get_y()
+                self.rect(x_start, y_start, col_widths[0], row_height)
+                self.rect(x_start + col_widths[0], y_start, col_widths[1], row_height)
+                self.rect(x_start + col_widths[0] + col_widths[1], y_start, col_widths[2], row_height)
+                sl_no_padding = (row_height - line_height) / 2
+                self.set_xy(x_start, y_start + sl_no_padding)
+                self.cell(col_widths[0], line_height, sl_no_text, border=0, align='C')
+                self.set_xy(x_start + col_widths[0], y_start)
+                self.multi_cell(col_widths[1], line_height, address_text, border=0, align='L')
+                pincode_padding = (row_height - line_height) / 2
+                self.set_xy(x_start + col_widths[0] + col_widths[1], y_start + pincode_padding)
+                self.cell(col_widths[2], line_height, pincode_text, border=0, align='C')
+                self.set_y(y_start + row_height)
+
+@app.route('/staff/bins')
+@login_required
+@role_required('staff')
+def view_bins():
+    conn = get_db_connection()
+    if not conn: flash('Database service is currently unavailable.', 'danger'); return redirect(url_for('staff_home'))
+    cursor = conn.cursor(dictionary=True)
+    try:
+        cursor.execute("SELECT bin_id, bin_name FROM bin ORDER BY bin_name ASC")
+        bins = cursor.fetchall()
+        return render_template('view_bins.html', bins=bins)
+    except Error as e:
+        flash(f'Could not retrieve bin information: {e}', 'danger')
+        return redirect(url_for('staff_home'))
+    finally:
+        cursor.close()
+        conn.close()
+
+@app.route('/api/staff/bin_contents/<int:bin_id>')
+@login_required
+@role_required('staff')
+def get_bin_contents(bin_id):
+    conn = get_db_connection()
+    if not conn: return jsonify({'error': 'Database connection failed.'}), 500
+    cursor = conn.cursor(dictionary=True)
+    try:
+        query = """
+            SELECT p.full_address, p.pincode, si.parcel_id as sorted_item_id
+            FROM sorted_item si 
+            JOIN parcel p ON si.parcel_id = p.parcel_id 
+            WHERE si.bin_id = %s AND p.status = 'binned'
+            ORDER BY si.sorted_time ASC
+        """
+        cursor.execute(query, (bin_id,))
+        contents = cursor.fetchall()
+        return jsonify(contents)
+    except Error as e:
+        print(f"DATABASE ERROR in get_bin_contents: {e}")
+        return jsonify({'error': f'Database query failed: {e}'}), 500
+    finally:
+        cursor.close()
+        conn.close()
+
+@app.route('/staff/download_pdf/<int:bin_id>')
+@login_required
+@role_required('staff')
+def download_pdf(bin_id):
+    conn = get_db_connection()
+    if not conn: flash('Database connection error.', 'danger'); return redirect(url_for('view_bins'))
+    cursor = conn.cursor(dictionary=True)
+    try:
+        cursor.execute("SELECT bin_name FROM bin WHERE bin_id = %s", (bin_id,))
+        bin_info = cursor.fetchone()
+        if not bin_info: flash('Bin not found.', 'danger'); return redirect(url_for('view_bins'))
+        query_fetch_pending = """
+            SELECT p.full_address, p.pincode, si.parcel_id as sorted_item_id
+            FROM sorted_item si 
+            JOIN parcel p ON si.parcel_id = p.parcel_id 
+            WHERE si.bin_id = %s AND p.status = 'binned'
+            ORDER BY si.sorted_time ASC
+        """
+        cursor.execute(query_fetch_pending, (bin_id,))
+        contents_for_pdf = cursor.fetchall()
+        
+        pdf = PDF()
+        pdf.add_page()
+        pdf.create_table(contents_for_pdf, bin_info['bin_name'])
+        pdf_output = pdf.output(dest='S').encode('latin-1')
+        
+        response = make_response(pdf_output)
+        response.headers['Content-Type'] = 'application/pdf'
+        response.headers['Content-Disposition'] = f'attachment; filename=manifest_{bin_info["bin_name"]}.pdf'
+        return response
+    except Error as e:
+        flash(f'Failed to generate PDF: {e}', 'danger')
+        return redirect(url_for('view_bins'))
+    finally:
+        cursor.close()
+        conn.close()
+
+@app.route('/staff/clear_bin_session', methods=['POST'])
+@login_required
+@role_required('staff')
+def clear_bin_session():
+    data = request.get_json()
+    item_ids_to_clear = data.get('item_ids', [])
+    if not isinstance(item_ids_to_clear, list) or not item_ids_to_clear:
+        return jsonify({'success': True, 'message': 'No items to clear.'})
+    conn = get_db_connection()
+    if not conn:
+        return jsonify({'success': False, 'message': 'Database service is unavailable.'}), 500
+    cursor = conn.cursor()
+    try:
+        placeholders = ', '.join(['%s'] * len(item_ids_to_clear))
+        query = f"UPDATE parcel SET status = 'dispatched' WHERE parcel_id IN ({placeholders})"
+        cursor.execute(query, tuple(item_ids_to_clear))
+        conn.commit()
+        message = f"Successfully marked {cursor.rowcount} items as dispatched."
+        return jsonify({'success': True, 'message': message})
+    except Error as e:
+        conn.rollback()
+        print(f"DATABASE ERROR in clear_bin_session: {e}")
+        return jsonify({'success': False, 'message': f'A database error occurred: {e}'}), 500
+    finally:
+        cursor.close()
+        conn.close()
+
+@app.route('/staff/sorted-history')
+@login_required
+@role_required('staff')
+def view_sorted_history():
+    conn = get_db_connection()
+    if not conn:
+        flash('Database service is currently unavailable.', 'danger')
+        return redirect(url_for('staff_home'))
+    cursor = conn.cursor(dictionary=True)
+    items = []
+    try:
+        staff_id = session.get('staff_id')
+        query = """
+            SELECT 
+                b.bin_name, 
+                p.full_address, 
+                p.pincode, 
+                si.sorted_time
+            FROM sorted_item si
+            JOIN parcel p ON si.parcel_id = p.parcel_id
+            JOIN bin b ON si.bin_id = b.bin_id
+            WHERE 
+                si.staff_id = %s 
+                AND DATE(si.sorted_time) = CURDATE()
+            ORDER BY si.sorted_time DESC
+        """
+        cursor.execute(query, (staff_id,))
+        items = cursor.fetchall()
+    except Error as e:
+        flash(f'An error occurred while fetching sorted history: {e}', 'danger')
+    finally:
+        cursor.close()
+        conn.close()
+    return render_template('view_sorted_history.html', items=items)
+
+if __name__ == '__main__':
+    app.run(debug=True, use_reloader=True)
