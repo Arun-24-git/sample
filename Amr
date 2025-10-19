@@ -1,0 +1,1147 @@
+\documentclass[a4paper,12pt,toc=flat]{report}
+\usepackage{times}
+\usepackage{sectsty}
+
+\usepackage{ragged2e}
+\usepackage{graphicx}
+\usepackage{multirow}
+\usepackage{caption}
+\usepackage{blindtext}
+\usepackage{tikz}
+\usepackage{float}       % for [H] placement
+\usepackage{placeins} % for \FloatBarrier
+\usepackage{pdflscape}
+\usepackage[a4paper,total={6in,9in}]{geometry}
+
+
+%\RequirePackage[left=6.1cm,top=2cm,right=1.5cm,bottom=2.5cm,nohead,nofoot]{geometry}
+%\usepackage[a4paper,total={6in,8in}]{geometry}
+
+
+\sectionfont{\fontsize{12}{15}\selectfont}
+\subsectionfont{\fontsize{11}{12}\selectfont}
+\subsubsectionfont{\fontsize{11}{12}\selectfont}
+
+
+
+\usepackage{lipsum}% http://ctan.org/pkg/lipsum
+\usepackage{titletoc}% http://ctan.org/pkg/titletoc
+\titlecontents{chapter}% <section-type>
+[0pt]% <left>
+{}% <above-code>
+{\bfseries\chaptername\ \thecontentslabel\quad}% <numbered-entry-format>
+{}% <numberless-entry-format>
+{\bfseries\hfill\ \contentspage}% <filler-page-format>
+
+
+\linespread{1.5}
+
+\usepackage[pagestyles]{titlesec}
+
+\titleformat{\chapter}[display]
+{\normalfont\huge\bfseries\centering}{\centering\chaptertitlename\ \thechapter}{20pt}{\Huge}
+\titlespacing*{\chapter}
+{0pt}{50pt}{40pt}
+
+\pagenumbering{none}
+
+
+\author{AMRITH}
+\date{DECEMBER 2025}
+
+
+\begin{document}
+{\centering \bf \large
+ Loolocator\\ \par
+	}
+	\begin{center}
+		{\small PROJECT REPORT} \vspace*{17pt}
+		\\ Submitted by\\
+		\vspace*{17pt}
+		{\bf AMRITH \\
+			KMC24MCA-2005\\
+			\vspace*{23pt}
+			to}\\
+		\vspace*{15pt}
+		the APJ Abdul Kalam Technological University in partial fulfillment of
+		the requirements for the award of the Degree\\
+		\vspace*{9pt} of\\
+		\vspace*{9pt} \textit{ Master of Computer Applications
+		} 
+		\vspace*{15pt}
+		\begin{figure}[bph]
+			\centering
+			\
+		\includegraphics[width=0.3023\linewidth]{logo.jpg
+        }
+			
+			
+		\end{figure}
+		
+		\bf{Department Of Management Studies  \& Computer Applications
+			\vspace*{12pt}
+			\\KMCT College of Engineering
+			\vspace*{8pt}
+			\\Kallanthode, NITC P.O, Kozhikode-673601}
+		
+	\end{center}
+	\begin{center}
+		\vspace*{6pt}APRIL 2025
+	\end{center}
+	
+	
+% 	\pagenumbering{roman}		
+	\vspace*{20pt}
+		\par
+	\hspace*{12pt}
+\pagebreak
+
+{\centering \bf \large
+	DECLARATION\par
+}
+
+\vspace*{20pt}
+
+{\normalsize
+\noindent
+I undersigned hereby declare that the project report titled \textbf{Loolocator App}, submitted for partial fulfillment of the requirements for the award of degree of \textbf{Master of Computer Applications} of the \textbf{APJ Abdul Kalam Technological University, Kerala} is a bonafide work done by me under the supervision of \textbf{Remmya C B }submission represents my ideas in my own words and where ideas or words of others have been included, I have adequately and accurately cited and referenced the original sources. I also declare that I have adhered to the ethics of academic honesty and integrity and have not misrepresented or fabricated any data or idea or fact or source in my submission. I understand that any violation of the above will be a cause for disciplinary action by the institute and/or the University and can also evoke penal action from the sources which have thus not been properly cited or from whom proper permission has not been obtained. This report has not been previously formed the basis for the award of any degree, diploma or similar title of any other University.
+}
+
+\vspace{20pt}
+
+\begin{center}
+	Place: Kallanthode \hspace*{14.5pt} \hfill  AMRITH  \\
+	\vspace*{10pt}
+	Date: \hspace*{0pt} \hfill 
+	\vspace{10pt}
+\end{center}
+\thispagestyle{empty}
+	\pagebreak
+
+
+
+    \begin{center}
+		
+		\textbf{
+			\vspace*{8pt}
+			DEPARTMENT OF MANAGEMENT STUDIES \& COMPUTER
+			\vspace*{8pt}
+			APPLICATIONS\\
+			KMCT COLLEGE OF ENGINEERING\\
+			\vspace*{8pt}
+			Kallanthode, NITC P.O, Kozhikode-673601
+		}
+		
+		\begin{figure}[bph]
+			\centering
+	    \includegraphics[width=0.3023\linewidth]{logo.jpg}
+			\label{fig:ksblogo}
+		\end{figure}
+	\end{center}
+
+ {\centering \bf \large
+	CERTIFICATE\par
+}		
+
+\vspace*{10pt}
+
+\newline
+\noindent
+This is to certify that the report entitled {\bf  LOOLOCATOR APP } submitted
+by {\bf AMRITH (KMC24MCA-2005)}
+to the APJ Abdul Kalam Technological University
+in partial fulfillment of the requirements for the award of the Degree of Master of Computer
+Applications is a bonafide record of the project work carried out by her under our guidance and
+supervision. This report in any form has not been submitted to any other University or Institute for
+any purpose.
+	
+\begin{center}\vspace*{20pt}
+	Internal Supervisor \hspace*{0pt} \hfill  Project Coordinator
+\end{center}
+	
+\begin{center}\vspace*{40pt}
+        External Examiner\hspace*{0pt} \hfill  Head of the Department
+\end{center}
+
+
+\thispagestyle{empty}
+\pagebreak
+
+
+\section*{\centering \bf \large ACKNOWLEDGEMENT}
+ \pagenumbering{roman}
+	
+
+	\vspace*{20pt}
+\newline
+  I would like to take this opportunity to extend my sincere thanks to people who helped me
+ to make this project possible. This project will be incomplete without mentioning all the
+ people who helped me to make it real.\vspace{12pt}
+	\newline
+	First and foremost I thank {\bf Dr. Kavitha S. Murugesan. (Principal, KMCT College of Engineering)} who gave me all support to this project. I also thank {\bf Dr.~Shamla~N.K. (Dean, KMCT School of Business)}, {\bf Mr.~Ajayakumar~K.K. (Head of the Department, MCA)} for providing all the facilities and resources for my project. I would also like to express my gratitude towards {\bf Ms.~Athulya~Prabhakaran (Assistant Professor, MCA)} Project Coordinators, as well as {\bf Ms.~Remmya C B. (Assistant Professor, MCA)} Project Guide, for their continuous support, guidance and supervision without which the project wouldn’t have been a reality.I would also take this opportunity to thank all my friends who took time out of their busy schedule to encourage, support and motivate me, which has been the key reason for the successful completion of this project.\vspace{12pt}\newline Above all I thank God, the almighty for his grace without which it would not have been
+	possible to complete this work on time.	
+	
+	
+	
+	\pagebreak
+
+
+
+	\section*{\centering \bf \large ABSTRACT}
+			
+	\vspace*{20pt}
+		\par
+	
+ 
+ 
+In today’s fast-paced urban environments, locating clean and accessible public restrooms remains a common challenge. LooLocator is an innovative smart system designed to address this issue by helping users quickly find nearby public restrooms using GPS-based location tracking. The system integrates IoT technology, QR code authentication, and a secure digital payment module to deliver a seamless and hygienic restroom experience.\vspace{12pt}\newline
+The application allows users to locate available restrooms on an interactive map, view details such as accessibility, hygiene rating, and availability status, and unlock restroom doors through a simple digital interface. Each restroom pod is equipped with an IoT-enabled locking system that can be remotely controlled once payment is verified, ensuring both convenience and security. Administrators have access to a web-based dashboard to monitor restroom usage, manage maintenance requests, track revenue analytics, and remotely unlock doors in emergency situations.\vspace{12pt}\newline
+By combining smart technologies like IoT, GPS, and data analytics, LooLocator enhances urban sanitation infrastructure and improves user convenience. It also enables authorities to maintain hygiene standards, optimize resource management, and ensure transparency in public facility operations. Thus, LooLocator contributes to the development of smart cities by transforming traditional public restrooms into intelligent, user-friendly, and data-driven spaces.
+
+
+
+
+	\pagebreak
+
+	
+	\tableofcontents{}
+		\pagebreak
+  \addcontentsline{toc}{section}{LIST OF TABLES}
+    \listoftables
+	
+	
+    \pagebreak
+    \addcontentsline{toc}{section}{LIST OF FIGURES}
+	\listoffigures
+    
+    
+\pagebreak    
+\addcontentsline{toc}{section}{ABBREVIATIONS}
+\section*{\centering \bf \large ABBREVIATIONS}
+
+\vspace*{30pt}
+
+\begin{flushleft}
+   \justifying
+   
+    API{\hspace{2.45cm} :{\hspace{0.5cm} Application Programming Interface  \\
+    STT  {\hspace{2.40cm}:{\hspace{0.5cm} Speech-to-Text  \\
+    TTS {\hspace{2.40cm}:{\hspace{0.5cm} Text-to-Speech \\
+    AI {\hspace{2.60cm} : {\hspace{0.1cm}{\hspace{0.4cm}Artificial Intelligence \\
+    REST  {\hspace{2.1cm}: {\hspace{0.5cm}Representational State Transfer \\
+%    NLP {\hspace{2.3cm}: {\hspace{0.5cm}Natural Language Processing  \\
+    % QA {\hspace{2.5cm}:{\hspace{0.5cm} Quality Assurance  \\
+    % SQL{\hspace{2.3cm} :{\hspace{0.5cm} Structured Query Language  \\
+    % UI {\hspace{2.6cm}: {\hspace{0.5cm}User Interface  \\
+    % UX {\hspace{2.5cm}: {\hspace{0.5cm}User Experience  \\
+    % XML {\hspace{2.2cm}: {\hspace{0.5cm}Extensible Markup Language  \\
+    % CSV {\hspace{2.3cm}: {\hspace{0.5cm}Comma-Separated Values  \\
+    % JSON {\hspace{2.2cm}:{\hspace{0.5cm} JavaScript Object Notation  \\
+    % REST {\hspace{2.2cm}:{\hspace{0.5cm} Representational State Transfer  \\
+    % HTTP {\hspace{2.2cm}:{\hspace{0.5cm} HyperText Transfer Protocol  \\
+    % HTTPS {\hspace{2cm}:{\hspace{0.5cm} HyperText Transfer Protocol Secure  \\
+    % UTF {\hspace{2.5cm}:{\hspace{0.5cm} Unicode Transformation Format  \\
+    % ID {\hspace{2.8cm}: {\hspace{0.5cm}Identifier  \\
+    % TN {\hspace{2.7cm}:{\hspace{0.5cm} Task Name  \\
+\end{flushleft}
+\pagebreak	
+	\pagebreak
+		\chapter{INTRODUCTION}
+	
+Access to clean, safe, and accessible public restrooms is a basic human necessity that plays a crucial role in maintaining public health, hygiene, and individual dignity. Despite its importance, access to public sanitation remains a challenge in many parts of the world—especially in densely populated and rapidly urbanizing countries like India. The need becomes even more critical when people are traveling, commuting, or navigating unfamiliar areas, where locating a usable restroom can be difficult, frustrating, or even impossible.\vspace{12pt}\newline
+In recent years, cities in India have witnessed considerable progress in adopting smart city initiatives—integrating technology to improve services in areas like transportation, energy, communication, and governance. However, one fundamental issue that continues to be neglected in these developments is the availability and management of public restrooms. While public toilets do exist, many suffer from poor maintenance, lack of accessibility, unclear location markers, or inadequate information for users.\vspace{12pt}\newline
+The absence of a digital platform that provides real-time, reliable, and location-based information about public restroom facilities is a major gap in urban planning. Most people still rely on informal inquiries or random exploration to find nearby restrooms, which is inefficient and discourages proper hygiene practices.\vspace{12pt}\newline
+it is a smart, user-centric, and location-aware public restroom detection system aimed at transforming how citizens locate and access public sanitation facilities. By leveraging mobile technology, geolocation, and user-generated data, LooLocator provides accurate, real-time information about nearby restrooms. Features include distance, gender designation (male, female, unisex), payment status (free or paid), accessibility for differently-abled individuals, and cleanliness ratings.\vspace{12pt}\newline
+LooLocator addresses a recurring urban problem with a practical, scalable solution. It not only simplifies a daily need but also contributes to broader public health goals, promotes inclusive infrastructure, and supports the vision of cleaner, smarter cities in India.
+
+
+	\pagenumbering{arabic}
+	\section{General Background}
+	
+	
+
+India is experiencing rapid urbanization, with increasing migration from rural areas to cities, a surge in tourism, and growing daily commutes placing significant stress on urban infrastructure. Among essential urban amenities, public restrooms are often neglected, resulting in poor maintenance, lack of hygiene, and insufficient mapping or monitoring. The absence of clean and accessible facilities impacts not only general comfort but also public health, as unhygienic toilets can contribute to the spread of diseases and environmental pollution. Restricted restroom access disproportionately affects vulnerable groups, including women, children, senior citizens, and people with disabilities, limiting their mobility and participation in public life. Although modern technology has improved services such as transportation, digital navigation, and communication, restroom accessibility remains largely unaddressed.\vspace{12pt}\newline
+
+This pressing need for accessible, hygienic, and well-managed public restrooms has created an opportunity for smart, data-driven solutions. **LooLocator** aims to bridge this gap by providing a technology-enabled platform that helps users locate nearby public restrooms, view real-time availability, and access clean facilities efficiently. By integrating GPS, IoT-enabled door control, QR code verification, and usage analytics, LooLocator not only improves user convenience but also assists authorities and service providers in monitoring, maintaining, and optimizing public restroom infrastructure. This innovative approach ensures hygiene, safety, and accessibility for all, making urban spaces more inclusive and user-friendly.\vspace{12pt}
+
+
+  
+
+	
+	\section{Objective}
+	The core objective of this project is to develop LooLocator, a smart public restroom finder application that delivers timely, accurate, and location-specific information to users. The system aims to help users locate nearby public restrooms using GPS and provide comprehensive details for each facility, including the type (male, female, or unisex), accessibility for differently-abled individuals, cleanliness ratings based on user feedback, payment status, and operating hours. Additionally, LooLocator enables users to submit reviews, rate cleanliness, and report issues such as closures or maintenance problems. Beyond user convenience, the project supports broader goals of the Swachh Bharat Mission and smart city initiatives by bridging the information gap between users, urban planners, and service providers, thereby contributing to improved hygiene, accessibility, and effective management of public restroom infrastructure.\vspace{12pt}
+	
+    \section{Scope}
+The scope of LooLocator encompasses designing and implementing a comprehensive smart public restroom finder system that serves both users and administrators. For users, the application provides real-time location-based restroom information, including accessibility, cleanliness, operating hours, and payment requirements. It enables users to rate facilities, submit feedback, and report issues, creating a community-driven quality monitoring mechanism. For administrators and service providers, the system offers tools to manage restroom data, monitor usage patterns, track maintenance needs, and analyze feedback for operational improvements. The project also integrates IoT-enabled features, such as smart locks, to automate restroom access based on verified usage or payments. While the system is focused on urban environments with GPS-enabled devices, it can be extended to include web and mobile platforms, supporting smart city initiatives, enhancing public hygiene, and bridging the information gap between citizens and municipal authorities.\\
+    \pagebreak
+    
+
+\vspace{}
+\chapter{\centering \bf \hspace*{}LITERATURE SURVEY}
+\section{Literature Survey for Looloactor App }
+Access to clean and accessible public restrooms remains a major challenge in densely populated urban areas, particularly in India. Despite sanitation initiatives like the Swachh Bharat Abhiyan, issues such as poor hygiene, lack of real-time visibility, and inadequate digital infrastructure continue to affect user satisfaction. Traditional methods like static signage or basic locator apps often fail to provide timely or accurate information about restroom availability, cleanliness, or accessibility. Applications such as Toilet Finder, SitOrSquat, and Flush offer GPS-based locating features but are limited by outdated data, low regional penetration, and minimal functionality beyond simple mapping.\vspace{12pt}\newline
+
+The integration of Internet of Things (IoT) technologies has shown significant promise in addressing these issues. Sensors can monitor parameters such as occupancy, odor, humidity, and air quality, which helps in improving maintenance outcomes. Studies by Jain and Aggarwal (2021) demonstrate that microcontroller-based setups using Arduino or Raspberry Pi can provide enhanced operational insight and better hygiene management. While countries like Singapore and South Korea have begun implementing such technologies, they are mostly in pilot stages and lack seamless integration with mobile applications.\vspace{12pt}\newline
+
+Digital payment systems and QR code authentication, widely adopted in retail and transportation in countries like China and Japan (Zhou, 2019), could also be applied to restroom access. Coupled with IoT-enabled smart locks, these systems can provide controlled access and facilitate efficient fee collection. However, such solutions remain largely unexplored in the public sanitation sector in India. These technologies have the potential to improve convenience, security, and operational efficiency when combined in an integrated system.\vspace{12pt}\newline
+
+User-driven feedback mechanisms are another key factor in maintaining hygiene standards. Research by Ahmed and Kumar (2020) indicates that linking real-time user feedback to automated cleaning schedules can improve hygiene by 25–30 percent. Yet, these systems are often isolated and not connected to IoT frameworks or locator applications. Administrative dashboards exist for monitoring usage, triggering maintenance alerts, and managing access in select facilities such as hospitals and metro stations, but they are rarely integrated with mobile apps for end-users.\vspace{12pt}\newline
+
+The primary research gap lies in creating a unified platform that combines GPS-based search, IoT monitoring, QR-based access, feedback collection, and administrative dashboards into a scalable solution. The LooLocator project addresses this gap by providing a mobile application that enables users to locate, access, and rate restrooms in real time while allowing administrators to monitor and maintain facilities remotely. This integrated approach not only enhances user convenience and hygiene but also supports smart city initiatives and sustainable urban sanitation management.\\
+\vspace{12pt}
+
+
+\vspace{}
+\chapter{\centering \bf \hspace*{}SYSTEM ANALYSIS}
+	
+		\section{Existing system}
+		
+
+In the current scenario, access to public restrooms is managed through conventional and fragmented systems with minimal technological integration. Most cities rely on static infrastructure such as physical signboards, printed maps, or word-of-mouth directions to guide users to nearby toilets. These approaches are unreliable, especially for travelers, tourists, or individuals in unfamiliar areas. Many existing digital restroom locator applications like Toilet Finder, Flush, and SitOrSquat offer basic GPS-based location services but lack features like real-time availability, cleanliness ratings, or maintenance updates. Consequently, users often encounter restrooms that are either closed, poorly maintained, or unhygienic.\vspace{12pt}\newline
+
+Municipal bodies and local authorities typically maintain public sanitation records manually or through isolated digital spreadsheets. These systems do not provide any form of real-time monitoring or feedback collection from users. As a result, it becomes difficult to track restroom usage patterns, detect maintenance issues promptly, or ensure consistent cleanliness standards. The absence of an integrated management system also leads to inefficiencies in resource allocation for cleaning and maintenance schedules.\vspace{12pt}\newline
+
+From the user’s perspective, existing systems fail to deliver essential information such as restroom accessibility for differently-abled individuals, operating hours, or payment requirements. Moreover, there is no digital mechanism for users to report issues or provide feedback about hygiene conditions. This lack of communication between users and maintenance authorities results in recurring problems being left unresolved.\vspace{12pt}\newline
+
+Some smart city initiatives have experimented with sensor-based restroom monitoring; however, these implementations are often limited to high-traffic areas like airports, metro stations, or malls. These isolated setups typically operate independently without public access through mobile platforms. Furthermore, they rarely incorporate modern technologies like IoT-based lock control, QR authentication, or digital payment systems that can streamline access and improve accountability.\vspace{12pt}\newline
+
+Overall, the existing restroom management ecosystem remains highly fragmented, inefficient, and user-unfriendly. There is a pressing need for a comprehensive, data-driven, and user-interactive solution that integrates GPS navigation, IoT-based monitoring, and digital services into a single accessible platform. The LooLocator system aims to overcome these shortcomings by introducing an intelligent, real-time restroom management and accessibility platform designed for urban environments.\vspace{12pt}
+\pagebreak
+
+	\\
+\section{Proposed system}
+The proposed LooLocator system is a technologically advanced and socially impactful solution designed to modernize the way public restrooms are located, accessed, and managed. With increasing urbanization and the growing need for hygienic public infrastructure, the system leverages modern technologies such as GPS, QR code authentication, IoT-based smart locking systems, mobile applications, and cloud computing to deliver a real-time, interactive restroom management solution. It is specifically tailored to overcome the limitations of traditional restroom finding methods and existing apps, which often suffer from outdated information, lack of automation, and poor user experience.\vspace{12pt}\newline
+
+At its core, LooLocator operates through a mobile application available on Android and iOS platforms. This application helps users identify nearby public restrooms using real-time GPS tracking and provides detailed information including distance, gender-specific access (male/female), cleanliness ratings, availability, and accessibility features such as wheelchair ramps. The interface is designed to be intuitive, multilingual, and inclusive, ensuring that users from diverse backgrounds can easily navigate and use the platform.\vspace{12pt}\newline
+
+The system’s smart access mechanism is one of its defining features. Restroom doors are equipped with IoT-enabled smart locks connected to microcontrollers such as Arduino or Raspberry Pi. When a user arrives at a selected restroom, they can scan a QR code displayed at the entrance. The system verifies the scan, processes digital payments if required (via UPI, Google Pay, Paytm, etc.), and triggers the IoT module to remotely unlock the door. This secure, contactless process not only enhances hygiene and safety but also ensures controlled access and data logging for usage analytics.\vspace{12pt}\newline
+
+In addition to user-side features, the admin panel provides robust tools for restroom owners or municipal administrators. Through a cloud-based dashboard, administrators can add or update restroom listings, monitor usage logs in real-time, remotely control access during emergencies, and receive reports of maintenance or cleanliness issues submitted by users. The admin panel is also equipped with analytics capabilities to visualize trends, usage peaks, hygiene feedback, and system health, enabling proactive maintenance and decision-making.\vspace{12pt}\newline
+
+The system is designed for scalability and modularity, making it adaptable to urban, semi-urban, or rural contexts. It supports third-party integrations such as Google Maps APIs for location services, Firebase or MySQL for database management, and payment gateways like Razorpay or PhonePe. The IoT infrastructure uses Wi-Fi or GSM modules to maintain seamless communication with the cloud server.\vspace{12pt}\newline
+
+Ultimately, LooLocator is not just a location service—it is a smart public sanitation ecosystem. It fills the existing technological and infrastructural gaps in sanitation services, aligns with national initiatives like Swachh Bharat Abhiyan and Smart Cities Mission, and promotes digital hygiene awareness, safety, and convenience for millions of urban dwellers.\vspace{12pt}\newline
+
+
+\pagebreak
+
+
+
+\section{Module Description}
+The proposed system comprises multiple interdependent modules designed to streamline public restroom discovery, access, and management. These modules collaboratively enhance user convenience and provide administrators with the tools to monitor and control facilities efficiently.
+
+\subsection{ User Location and Map Module (Location Display Module)}
+This module leverages GPS technology to determine the user’s real-time location and displays nearby public restrooms on an interactive map. By integrating services like Google Maps API, the module ensures high accuracy and provides a visual representation of available restrooms, enabling users to make quick, location-based decisions.
+
+\subsection{ Restroom Information Display Module}
+This module showcases detailed information about each restroom, including gender type (male/female), accessibility options (such as wheelchair access), and payment status (free or paid). It provides users with essential data needed to choose restrooms based on comfort, safety, and personal requirements.
+
+\subsection{ Filter and Search Module}
+This component allows users to refine their restroom search by applying various filters. Users can filter restrooms by type, accessibility features, and payment status. This targeted search functionality ensures that users find the most suitable restroom option in minimal time, based on individual preferences and requirements.
+
+\subsection{ QR Code Scan and Payment Module}
+This module allows users to scan a QR code at the restroom entrance, which opens a secure interface to initiate or complete a digital payment. The integration of mobile wallets (e.g., UPI, Paytm, Google Pay) makes the transaction process seamless. This also serves as a verification step before unlocking the door, improving both access control and hygiene.
+
+\subsection{ IoT-Based Smart Door Unlock Module}
+This module forms the core of the smart restroom system, where IoT devices control physical access to the restroom. After successful QR scan and payment, the IoT-enabled system receives a trigger to unlock the restroom door remotely. The module also logs access times, user IDs, and unlock events, allowing for real-time monitoring and enhanced security.
+
+\subsection{ Admin Management Module}
+This module is built for system administrators and offers functionalities such as adding and managing restroom listings, monitoring unlock logs, responding to reported issues, and remotely controlling restroom doors in case of emergencies or technical failures. The admin dashboard includes analytical tools and alert notifications, helping administrators maintain hygiene standards, improve service delivery, and ensure system integrity.
+
+\\	
+
+\section{Feasibility Study}
+A feasibility study is essential for assessing the practicality and potential success of the proposed system. It evaluates different aspects to determine whether the LooLocator project is achievable within constraints such as time, technology, and cost. The following are the primary areas of feasibility analysis:
+
+\subsection{ Operational Feasibility}
+The proposed system is designed with the end-user in mind, offering intuitive navigation, location-based restroom search, and secure digital access. Since the application is aimed at a wide demographic—including commuters, tourists, and people in unfamiliar urban areas—its operational model emphasizes user-friendliness and reliability. The admin module ensures efficient monitoring and upkeep of restroom facilities. Overall, the system is highly operationally feasible and aligns well with existing smart city initiatives like Swachh Bharat.
+
+\subsection{Technical Feasibility}
+
+The LooLocator application utilizes widely available and mature technologies such as GPS for geolocation, mobile applications for user interaction, cloud storage for real-time data access, QR scanning for secure entry, and IoT-based modules for smart restroom door unlocking. These components are technically sound, scalable, and compatible with current infrastructure across Android, iOS, and web platforms. Integration with third-party APIs like Google Maps, UPI-based payment gateways (e.g., Paytm, PhonePe, Razorpay), and Firebase or MySQL databases is straightforward, thanks to comprehensive developer documentation and community support.
+
+From a hardware perspective, the use of cost-effective microcontrollers such as Arduino or Raspberry Pi for the IoT modules ensures that the system remains technically feasible in both urban and semi-urban implementations. The smart locking mechanism can be controlled remotely and integrated easily into the cloud platform, providing robust performance with low latency.
+
+From the end-user perspective, the system is technically feasible due to its reliance on familiar and accessible technologies. Most users already possess smartphones with internet connectivity, GPS capability, and a built-in camera for QR scanning. The app interface is designed to be lightweight, user-friendly, and responsive across devices, ensuring smooth operation even in areas with moderate internet bandwidth. Users are not required to learn new hardware or complex interfaces—the interaction with the system is intuitive and minimal.
+
+Therefore, considering both administrative and user standpoints, the LooLocator system is technically feasible, deployable with existing technologies, and offers the potential for future enhancements without requiring substantial infrastructure changes.
+
+\subsection{ Economical Feasibility}
+The project involves initial setup costs for IoT hardware, software development, server hosting, and maintenance. However, once deployed, the operational costs are relatively low due to automation and remote monitoring. Revenue can be generated via paid restroom access or government/public sector funding under smart infrastructure schemes. Considering the long-term public health benefits, reduced manual labor, and minimal running costs, the project is economically viable.
+
+  
+	\section{System Environment}
+
+The system environment for the LooLocator project consists of the hardware and software components required for development, deployment, and operation. This setup ensures smooth performance across mobile and web platforms while enabling real-time IoT functionality and administrative control.
+
+\subsection{Hardware Requirements}
+
+The following hardware components are necessary for both end-user access and system-side operations:
+
+\begin{itemize}
+    \item {End User Devices:}
+    \begin{itemize}
+        \item Smartphones with GPS, camera, and internet connectivity (Android/iOS)
+        \item Minimum 2GB RAM and 1.5GHz processor
+    \end{itemize}
+    
+    \item {Server Infrastructure:}
+    \begin{itemize}
+        \item Cloud-based or dedicated server with minimum 8GB RAM and multi-core processor
+        \item Storage capacity: 50GB or more for database, logs, and backups
+    \end{itemize}
+    
+    \item {IoT Devices:}
+    \begin{itemize}
+        \item Microcontrollers such as Arduino or Raspberry Pi
+        \item Servo motors or magnetic door locks for restroom access
+        \item Wi-Fi or GSM modules for network communication
+        \item Power supply units and enclosure for onsite installation
+    \end{itemize}
+\end{itemize}
+
+\subsection{Software Requirements}
+
+The software stack used in the LooLocator system spans frontend, backend, database, and IoT platforms:
+
+\begin{itemize}
+    \item Frontend:
+    \begin{itemize}
+        \item Mobile Application: Flutter
+    \end{itemize}
+
+    \item Backend:
+    \begin{itemize}
+        \item Node.js
+    
+    \end{itemize}
+
+    \item Database:
+    \begin{itemize}
+        \item MySQL
+    \end{itemize}
+
+    \item Third-Party Integrations:
+    \begin{itemize}
+        \item Google Maps API – location and navigation
+        \item QR Code libraries – QR code generation and scanning
+        \item Razorpay or UPI-based payment gateways – digital transactions
+    \end{itemize}
+
+    \item IoT Programming:
+    \begin{itemize}
+        \item Arduino IDE or Python with GPIO libraries for Raspberry Pi
+    \end{itemize}
+\end{itemize}
+
+Various tools and platforms were used throughout the development process, including VS Code and Android Studio as Integrated Development Environments (IDEs), GitHub for version control, and Slack or WhatsApp for team collaboration. The database layer was managed using Firebase Realtime Database or MySQL, and the IoT components relied on Raspberry Pi modules with servo or magnetic locking mechanisms.
+
+
+\section{Actors And Roles}
+The LooLocator system involves multiple actors, each with distinct responsibilities to ensure the efficient functioning of the platform. These actors include end users, administrators, and IoT devices, all working together within a connected ecosystem.
+
+\subsection*{3.6.1 End Users}
+End users are the primary actors who interact with the system. Their responsibilities include:
+\begin{itemize}
+  \item Using the mobile or web application to search for nearby restrooms via GPS.
+  \item Applying filters based on:
+  \begin{itemize}
+    \item Gender designation,
+    \item Cleanliness,
+    \item Accessibility,
+  \end{itemize}
+  \item Scanning QR codes for restroom access.
+  \item Making digital payments if required.
+  \item Submitting cleanliness ratings.
+  \item Reporting maintenance or hygiene issues.
+  \item Contributing real-time feedback to maintain accurate restroom data and improve hygiene standards.
+\end{itemize}
+
+\subsection*{3.6.2 Admin}
+Admins (system administrators) manage backend operations and ensure overall system functionality:
+\begin{itemize}
+  \item Approving and updating restroom listings.
+  \item Monitoring usage logs.
+  \item Remotely unlocking or locking restroom doors in emergencies.
+  \item Responding to user complaints and reports.
+  \item Ensuring IoT device functionality and maintenance.
+  \item Overseeing hygiene compliance and quality standards.
+  \item Analyzing dashboard data to enhance services.
+  \item Acting as the communication link between users and the physical restroom infrastructure.
+\end{itemize}
+
+
+\chapter{SYSTEM DESIGN}
+
+\section{Methodology}
+The development of the LooLocator system was based on the Agile software engineering paradigm, specifically the SCRUM methodology, to promote iterative progress, stakeholder collaboration, and adaptability throughout the project lifecycle. Clearly defined SCRUM roles ensured smooth execution, with the product owner managing the backlog, the development team implementing core features like GPS mapping, QR-based access, digital payments, and IoT integration, and the scrum master facilitating workflow and resolving impediments. The system followed a structured development approach beginning with requirement analysis and UML-based system design, progressing through modular development of components such as location tracking, restroom display, payment interface, IoT door control, and admin dashboard. Modern technologies like Flutter or React Native for mobile, Node.js or Python for backend, MySQL or Firebase for databases, and Arduino or Raspberry Pi for IoT integration were employed, alongside APIs like Google Maps and Razorpay to enhance functionality. After modular testing and integration, the system was deployed on cloud infrastructure for scalability and high availability. In operation, users locate restrooms, make digital payments, and unlock doors via IoT-enabled QR codes, while administrators monitor usage and analytics in real time through a web dashboard. This agile, modular, and technology-driven approach ensured that LooLocator met its objectives effectively while remaining adaptable for future smart sanitation innovations.
+\pagebreak
+
+
+
+			
+
+	
+
+
+		
+\newpage
+\section{UML Diagrams}
+\subsection{UseCase Diagram}
+\usetikzlibrary{positioning, shapes.geometric, arrows.meta, calc}
+
+\tikzset{
+    usecase/.style={
+        ellipse,
+        draw,
+        minimum width=3.8cm,
+        minimum height=1.2cm,
+        align=center
+    },
+    arrow/.style={->, thick}
+}
+
+% Draw stickman directly at coordinate
+\newcommand{\drawstickman}[2]{
+    \begin{scope}[shift={(#1)}]
+        \draw[thick] (0,0) circle(0.3);          % Head
+        \draw[thick] (0,-0.3) -- (0,-1.2);       % Body
+        \draw[thick] (0,-0.6) -- (-0.5,-1);      % Left arm
+        \draw[thick] (0,-0.6) -- (0.5,-1);       % Right arm
+        \draw[thick] (0,-1.2) -- (-0.4,-1.8);     % Left leg
+        \draw[thick] (0,-1.2) -- (0.4,-1.8);      % Right leg
+        \node at (0,-2.3) {#2};                  % Label
+    \end{scope}
+}
+
+\vspace{0.8cm}
+
+\begin{center}
+\begin{tikzpicture}[node distance=0.6cm and 1.2cm, every node/.style={font=\small}]
+
+% System boundary
+\node[draw, thick, minimum width=10cm, minimum height=18cm, label=above:{\textbf{}}] (system) {};
+
+% Use Cases
+\node[usecase] (uc1) at ([yshift=7cm]system.center) {Manage\\Restroom Listing};
+\node[usecase, below=of uc1] (uc2) {Track\\Access Logs};
+\node[usecase, below=of uc2] (uc3) {Unlock\\Doors Remotely};
+\node[usecase, below=of uc3] (uc4) {Receive\\Issue Reports};
+\node[usecase, below=of uc4] (uc5) {Search\\Restroom};
+\node[usecase, below=of uc5] (uc6) {Unlock\\Door};
+\node[usecase, below=of uc6] (uc7) {Submit\\Hygiene Rating};
+
+% Actor coordinates
+\coordinate (admin) at ([xshift=-6cm]uc2);
+\coordinate (user) at ([xshift=6cm]uc6);
+
+% Draw stickman actors
+\drawstickman{admin}{Admin};
+\drawstickman{user}{User};
+
+% Arrows from Admin with offset
+\draw[arrow] ($(admin)+(0.5,0)$) -- (uc1);
+\draw[arrow] ($(admin)+(0.5,0)$) -- (uc2);
+\draw[arrow] ($(admin)+(0.5,0)$) -- (uc3);
+\draw[arrow] ($(admin)+(0.5,0)$) -- (uc4);
+
+% Arrows from User with offset
+\draw[arrow] ($(user)+(-0.5,0)$) -- (uc5);
+\draw[arrow] ($(user)+(-0.5,0)$) -- (uc6);
+\draw[arrow] ($(user)+(-0.5,0)$) -- (uc7);
+
+\end{tikzpicture}
+
+\vspace{0.5cm}
+{Figure 4.2.1: UseCase Diagram}
+\end{center}
+\vspace{0.5cm}
+
+\pagebreak
+   \subsection{Activity Diagram}
+
+
+% TikZ libraries and styles (define once in preamble or before diagram)
+\usetikzlibrary{shapes.geometric, arrows.meta, positioning}
+
+\tikzset{
+    process/.style={
+        rectangle, draw=black
+        minimum width=4cm, minimum height=1.2cm, 
+        text centered, font=\small, rounded corners
+    },
+    decision/.style={
+        diamond, draw=black
+        text centered, aspect=2, inner sep=0pt, 
+        minimum height=1.5cm, font=\small
+    },
+    arrow/.style={thick, -Stealth, shorten >=2pt},
+    umlstart/.style={
+        circle, fill=black, minimum size=0.6cm, draw
+    },
+    umlend/.style={
+        draw, fill=black, circle, minimum size=0.8cm,
+        inner sep=0pt,
+        append after command={
+            \pgfextra{
+                \draw[line width=1mm, draw=black]
+                (\tikzlastnode.center) circle [radius=0.6cm];
+            }
+        }
+    }
+}
+
+\begin{center}
+\begin{tikzpicture}[node distance=1.6cm]
+
+% Nodes
+\node (start) [umlstart] {};
+\node (login) [process, below of=start] {Login/Register};
+\node (find) [process, below of=login] {Find Restroom via Map};
+\node (view) [process, below of=find] {View Restroom Details};
+\node (choose) [process, below of=view] {Choose the Entry Pod};
+\node (scan) [process, below of=choose] {Scan QR to Unlock};
+\node (payment) [process, below of=scan] {Make Payment};
+\node (success) [decision, below of=payment, yshift=-0.3cm] {Was Payment Successful?};
+\node (unlock) [process, below left=2.5cm and 2.5cm of success] {Unlock via IoT};
+\node (rating) [process, below of=unlock] {Submit Hygiene Rating};
+\node (end1) [umlend, below of=rating] {};
+
+\node (fail) [process, below right=2.5cm and 2.5cm of success] {Payment Failed};
+\node (end2) [umlend, below of=fail] {};
+
+% Arrows
+\draw [arrow] (start) -- (login);
+\draw [arrow] (login) -- (find);
+\draw [arrow] (find) -- (view);
+\draw [arrow] (view) -- (choose);
+\draw [arrow] (choose) -- (scan);
+\draw [arrow] (scan) -- (payment);
+\draw [arrow] (payment) -- (success);
+\draw [arrow] (success) -- node[above left] {Yes} (unlock);
+\draw [arrow] (unlock) -- (rating);
+\draw [arrow] (rating) -- (end1);
+\draw [arrow] (success) -- node[above right] {No} (fail);
+\draw [arrow] (fail) -- (end2);
+
+\end{tikzpicture}
+\vspace{0.5cm}
+{Figure 4.2.2: Activity Diagram}
+\end{center}
+\vspace{0.5cm}
+
+
+
+\pagebreak
+\subsection{Class Diagram}
+\FloatBarrier % ensures previous floats are placed before this section
+
+\begin{figure}[H]
+    \centering
+    \vspace{0.3cm} % small space below the heading
+    \includegraphics[width=1.00\linewidth]{Screenshot 2025-10-14 221359.png}
+{Figure 4.2.3: Class Diagram}
+    \label{fig:class_diagram}
+\end{figure}
+
+\pagebreak
+
+
+\section{User Story}
+\begin{table}[H]
+\centering
+\renewcommand{\arraystretch}{1.4} % line spacing between rows
+\setlength{\tabcolsep}{6pt}       % horizontal padding inside cells
+\begin{tabular}{|p{1.5cm}|p{3.2cm}|p{4.3cm}|p{4.3cm}|}
+\hline
+\textbf{User Story ID} & 
+\textbf{As a (type of user)} & 
+\textbf{I want to (perform some goal)} & 
+\textbf{So that I can (achieve some goal)} \\
+\hline
+1 & Admin & Add and manage restroom listings & Ensure accurate and updated information is shown to users. \\ \hline
+2 & Admin & Monitor restroom unlock logs & Track access and analyze usage trends. \\ \hline
+3 & Admin & Remotely access or unlock doors & Resolve user issues during technical failures. \\ \hline
+4 & New User & Register / Login & Access the restroom services securely. \\ \hline
+5 & User & View nearby public restrooms on a map & Easily find the closest restroom. \\ \hline
+6 & User & Apply filters based on type, payment, access, or distance & Find the restroom that best suits their needs. \\ \hline
+7 & User & View restroom details & Choose the best option based on available information. \\ \hline
+8 & User & Scan the QR code at the restroom entrance & Initiate the unlock or payment process. \\ \hline
+9 & User & Make a digital payment & Automatically unlock the door after successful payment. \\ \hline
+
+\end{tabular}
+\begin{center}
+{Table 4.3: User Story}
+\end{center}
+\label{tab:user_story}
+\end{table}
+\pagebreak
+
+
+\begin{table}[h!]
+    \centering
+    \begin{tabular}{|p{1.5cm}|p{3.5cm}|p{4.5cm}|p{4.5cm}|}
+        \hline
+        \centering \bfseries User Story ID No. &
+        \bfseries As a (type of user) &
+        \bfseries I want to (perform some goal) &
+        \bfseries So that I can (achieve some goal) \\
+        \hline
+        
+10 & User & Rate the cleanliness of the restroom & Help other users with hygiene-based feedback. \\ \hline
+11 & User & Report issues with a restroom & Alert the admin to fix problems quickly. \\ \hline
+    \end{tabular}
+\begin{center}
+{Table 4.3: User Story}
+\end{center}
+\end{table}
+\pagebreak
+
+
+
+
+\section{Product Backlog}
+
+\begin{table}[H]
+\centering
+\renewcommand{\arraystretch}{1.8}
+\begin{tabular}{|p{1.0cm}|p{1.8cm}|p{1cm}|p{1.2cm}|p{2.1cm}|p{2.0cm}|p{3.6cm}|}
+\hline
+\centering\textbf{User Story ID} &
+\textbf{Priority} (Low, High, Medium) &
+\textbf{Size} &
+\textbf{Sprint} &
+\textbf{Status} (Planned, Progressed, Completed) &
+\textbf{Release Date} &
+\textbf{Release Goal} \\
+\hline
+1  & High   & 5 & \multirow{3}{*}{1} & Planned & 12/08/2025 & Allow admin to manage restroom listing \\
+\cline{1-3} \cline{5-7}
+2  & High   & 5 &                    & Planned & 12/08/2025 & Track restroom access logs \\
+\cline{1-3} \cline{5-7}
+3  & High   & 8 &                    & Planned & 19/08/2025 & Secure login and registration for all users \\
+\hline
+4  & Medium & 8 & \multirow{3}{*}{2} & Planned & 26/08/2025 & Enable admin to unlock door remotely \\
+\cline{1-3} \cline{5-7}
+5  & High   & 8 &                    & Planned & 26/08/2025 & Help users find restroom via map \\
+\cline{1-3} \cline{5-7}
+6  & Medium & 5 &                    & Planned & 08/09/2025 & Info restroom by preference \\
+\hline
+7  & Medium & 3 &3 & Planned & 16/09/2025 & Display restroom details \\
+\cline{1-3} \cline{5-7}
+
+
+\hline
+\end{tabular}
+\vspace{0.5em}
+\begin{center}
+{Table 4.4: Product Backlog}
+\end{center}
+\end{table}
+
+\pagebreak
+\begin{table}[h!]
+    \centering
+		\begin{tabular}{ | p {1.0 cm} | p {1.8 cm} | p {1 cm} |  p {1.2 cm} |  p {2.1 cm} |  p {2.0 cm} |  p {3.6 cm} | }
+		\hline
+			\centering	\bf User Story ID &
+			\bf Priority
+			(Low,High,
+			Medium)   &
+			\bf Size &
+			\bf Sprint & 
+			\bf Status (Planned,
+			Progressed,
+			Completed) &
+			\bf Release Date & 
+			\bf Release Goal \\
+			\hline
+    
+ 8  & High   & 8 &                    & Planned & 16/09/2025 & QR scanning to start unlock/payment \\
+\cline{1-3} \cline{5-7}  
+9  & High   & 8 &                    & Planned & 23/09/2025 & IoT unlock after digital payment \\
+\hline
+10 & Low    & 5 & \multirow{2}{*}{4} & Planned & 30/09/2025 & User hygiene rating \\
+\cline{1-3} \cline{5-7}
+11 & Medium & 3 &                    & Planned & 07/10/2025 & Let admin receive issue reports \\
+\hline
+\end{tabular}
+\begin{center}
+{Table 4.4: Product Backlog}
+\end{center}\end{table}
+\pagebreak
+
+
+
+\pagebreak
+
+
+
+\section{Project Plan}
+\begin{table}[h!]
+    \centering
+    \begin{tabular}{| p{1.5cm} | p{4.5cm} | p{2.5cm} | p{2.5cm} | p{1.5cm} |}
+        \hline
+        \bfseries User Story ID & \bfseries Task Name & \bfseries Start Date & \bfseries End Date & \bfseries Days \\ \hline
+        1  & Admin: Manage restroom listing & 04/08/2025 & 12/08/2025 & 9  \\
+\hline
+2  & Track restroom access logs     & 07/08/2025 & 12/08/2025 & 6  \\
+\hline
+4  & Secure Logins \& Registration  & 11/08/2025 & 19/08/2025 & 9  \\
+\hline
+3  & Remote Door Unlock             & 16/08/2025 & 26/08/2025 & 11 \\
+\hline
+5  & Locate Restrooms on Map        & 23/08/2025 & 26/08/2025 & 4  \\
+\hline
+6  & Filter Restroom Preferences    & 27/08/2025 & 08/09/2025 & 13 \\
+\hline
+7  & Display Restroom Details       & 08/09/2025 & 16/09/2025 & 9  \\
+\hline
+8  & QR Code Scan and Payment       & 15/09/2025 & 16/09/2025 & 2  \\
+\hline
+9  & IoT-Based Smart Unlock         & 17/09/2025 & 23/09/2025 & 7  \\
+\hline
+10 & Hygiene Rating and Feedback    & 23/09/2025 & 30/09/2025 & 8  \\
+\hline
+11 & Admin Issue Report Receiving   & 01/10/2025 & 07/10/2025 & 7  \\
+\hline
+     \end{tabular}
+     \begin{center}
+{Table 4.5: Project plan}
+\end{center}
+    \end{table}
+    \pagebreak
+    
+ 
+
+
+
+
+\clearpage % Ensures the "Design Phase" starts on a new page
+\section*{4.6 Database Design}
+
+\vspace{1em}
+
+The database design of LooLocator is structured to support scalable, secure, and efficient management of public restroom facilities. It includes tables for users, restrooms, restroom pods, payments, IoT devices, and reports. Each table is designed with appropriate constraints, relationships, and data types to ensure integrity and smooth operations.
+
+\subsection*{4.6.1 User Table}
+
+The User table stores basic account details for users, including their roles and optional location. The primary key is user\_id, which uniquely identifies each user.
+
+
+	\begin{center}
+		\begin{tabular} { | p {0.5cm} | p {2 cm} | p {2.5 cm} |  p {3.6 cm} |  p {4 cm} | }
+			\hline
+			\centering
+			\bf No. & \bf Name & \bf Type & \bf Constraints & \bf Description \\
+			\hline
+1 & user\_id & int & Primary key & Unique user ID \\
+\hline
+2 & name & varchar(100) & Not null & User’s full name \\
+\hline
+3 & email & varchar(100) & Unique, Not null & User’s email address \\
+\hline
+4 & password & varchar(100) & Not null & User’s password \\
+\hline
+5 & role & varchar(50) & Not null & Identifies user role \\
+\hline
+6 & location &varchar(100) & Not null & user's location\\
+\hline
+            
+		\end{tabular} 
+		\vspace*{12pt}
+\begin{center}
+{Table 4.6.1: User table}
+\end{center}	\end{center}
+
+\pagebreak
+
+\subsection{Words Table }
+The Words table stores dictionary entries, including Tamil words along with their translations, phonetic representations, grammatical categories, meanings, example sentences, synonyms, antonyms, and transliterations. This table serves as the core of the application, enabling efficient word lookups and providing detailed linguistic insights to users.
+
+
+
+	\begin{center}
+    \renewcommand{\arraystretch}{1.3}
+		\begin{tabular} { | p {0.9cm} | p {2.3 cm} | p {3 cm} |  p {3 cm} |  p {4 cm} | }
+			\hline
+			\centering
+			\bf No. & \bf Name & \bf Type & \bf Constraints & \bf Description \\
+			\hline
+			1 & id &	AutoField &	Primary Key, Unique, Not Null &	Unique identifier for each word
+ \\ \hline
+			2 & word &	CharField(255) &	Unique, Not Null	&Stores the Tamil word\\ \hline
+			3 & grammatical\_ category &	CharField(100) &	Nullable &	Defines the type of word (noun, verb)
+\\ \hline
+			4 & phonetics &	CharField(255) &	Nullable &	Phonetic representation\\ \hline
+            
+			5 & translation	& CharField(255)	& Nullable &	Tamil to Malayalam translation
+\\ \hline
+
+6 & meaning &	TextField	& Nullable &	Detailed explanation
+\\ \hline
+
+7 &example\_\newline sentence&	TextField	&Nullable &	Example usage in a sentence
+\\ \hline
+
+8 & synonyms &	TextField &	Nullable &	Comma-separated synonyms
+\\ \hline
+
+9 & antonyms &	TextField	&Nullable &	Comma-separated antonyms
+\\ \hline
+
+10 & added\_on &	DateTimeField &	Auto Now Add, Not Null &	Timestamp when the word was added\\ \hline
+
+
+\end{tabular} 
+		\vspace*{12pt}
+		\captionof{table} {Words Table}
+	\end{center}
+\pagebreak
+\section{User Interface Design}
+
+\subsection{User Login}
+    \newline The User Login page allows users to access their accounts securely using their email and password. It includes fields for entering the registered email and password, a login button to authenticate, and a "Forgot Password" link for account recovery. The page is designed to be simple and user-friendly for easy access.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.4\linewidth]{1.png}
+    \caption{User Login Page}
+    \label{fig:enter-label}
+\end{figure}
+
+                       
+             
+    \pagebreak
+\subsection{User SignUp}
+\newline  The User Sign-Up Page allows new users to create an account by providing their email address, password, and confirming the password for verification. This page ensures secure registration by validating user inputs, such as matching passwords and verifying the email format. The design focuses on simplicity and user-friendliness, ensuring a smooth onboarding experience.
+\begin{figure}[htbp]
+
+                    \centering
+                    \includegraphics[width=0.5\linewidth]{2.png}
+                    \caption{User Registration Page}
+                    \label{fig:enter-label}
+                \end{figure}
+    
+
+\pagebreak
+
+\subsection{User Search Word }
+\newline The user search page provides a clean and intuitive interface for searching words in the dictionary. It includes a search bar where users can input the word they wish to look up. The page features a simple design with easy navigation to ensure a seamless user experience.
+\begin{figure}[htbp]
+                        \centering
+                        \includegraphics[width=0.5\linewidth]{3.png}
+                        \caption{User Search for Words Page}
+                        \label{fig:enter-label}
+                    \end{figure}
+                    \pagebreak
+
+    \subsection{User view result}    
+\newline   The Result Page in the dictionary provides users with a comprehensive view of the word's meaning, pronunciation, and usage. It displays the word's definition(s), part of speech, synonyms, antonyms, and examples in context. The layout is clean and easy to navigate, allowing users to quickly access all relevant information about the word.
+\begin{figure}[htbp]
+                          
+                                \centering
+                                \includegraphics[width=0.5\linewidth]{4.png}
+                                \caption{
+                                 Result Page}
+                                \label{fig:enter-label}
+                            \end{figure}
+                                                  
+                          \pagebreak
+                          
+
+ \pagebreak
+ \subsection{User Profile } 
+  \newline The User Profile page allows users to view and edit their personal information, including name, email, and password. Users can update their details through a simple and intuitive interface. Additionally, there is an option to log out of the system securely. The design prioritizes ease of use with clear fields for editing and a prominent logout button for quick access.
+\begin{figure}[htbp]         
+
+            \centering
+            \includegraphics[width=0.5\linewidth]{7.png}
+           \caption{User Profile Page }
+            \label{fig:enter-label}
+        \end{figure}
+        \pagebreak
+    \subsection{Admin Login }
+ \newline  The Admin Login UI allows the administrator to securely log in using their email and password. It features a clean and simple layout with fields for entering the email address and password. A "Login" button is provided to submit the credentials, while a "Forgot Password?" link offers recovery options. The design focuses on ease of use, with clear labels and a minimalistic style for a smooth login experience.
+
+\begin{figure}[htbp]
+         \centering
+         \includegraphics[width=0.5\linewidth]{8.png}
+         \caption{Admin Login Page}
+         \label{fig:enter-label}
+     \end{figure}
+     \pagebreak
+     \subsection{Admin Dashboard}
+     \newline  The admin dashboard UI for the dictionary page offers a streamlined interface for managing content and users. It includes sections for adding, editing, and deleting dictionary entries, along with tools for viewing and managing user accounts. A prominently placed logout button ensures easy session termination, providing a secure and efficient experience for admins.
+     
+\begin{figure}[htbp]
+             \centering
+             \includegraphics[width=0.5\linewidth]{9.png}
+             \caption{Admin Homepage}
+             \label{fig:enter-label}
+         \end{figure}
+    \pagebreak
+    \subsection{Admin add Words }
+     \newline The Admin Add Words UI allows the admin to add new words to a dictionary within the system. It features a clean and intuitive interface where the admin can input the word, its meaning, and any related categories. The form includes fields for word definition, pronunciation (if applicable), and tags to organize words by topics. The design ensures ease of use, with clear buttons for saving and canceling actions, and validation messages to ensure accurate word entries.
+     
+\begin{figure}[htbp]
+                 \centering
+                 \includegraphics[width=0.4\linewidth]{10.png}
+                          \caption{Admin add Words Page}
+             \label{fig:enter-label}
+         \end{figure}
+    \pagebreak
+    
+    \subsection{Admin view Users}
+    \newline The Admin View Users page allows administrators to view a list of all users within the system. It provides a clear, organized display of user information, such as names, roles, and status, enabling admins to easily browse through user profiles without the ability to make changes. This page is designed for quick reference and effective monitoring of all users in the system.
+\begin{figure}[htbp]
+            \centering
+            \includegraphics[width=0.5\linewidth]{11.png}
+            \caption{Admin view Users Page}
+            \label{fig:enter-label}
+        \end{figure}
+    \pagebreak 
+
+    \chapter{\centering \bf \hspace*{}TESTING AND IMPLEMENTATION}
+	% \vspace{2pt}
+\section{Backend Testing} 
+API testing for the Tamil to Malayalam Dictionary App was conducted using Postman to ensure the backend services function correctly, handle requests efficiently, and return expected responses. The testing process included verifying user authentication by checking login and registration endpoints, ensuring secure access control, and validating hashed passwords. The word search and translation functionalities were tested by sending GET requests to retrieve word details, meanings, translations, synonyms, and antonyms while handling errors for invalid inputs. Admin functionalities such as adding, updating, and deleting words were tested using POST, PUT, and DELETE requests to confirm proper data management and validation rules. Performance and load testing were performed to measure response times under different loads and ensure system stability under high traffic. Additionally, error handling tests covered scenarios like missing parameters, invalid data formats, and unauthorized access, ensuring meaningful error messages and secure API behavior. The successful completion of these tests validated the application's reliability, accuracy, and performance, ensuring a seamless and user-friendly experience.
+
+ \pagebreak    
+\section{Frontend Testing} 
+
+	    
+              \subsection{Test Case-1}
+
+\begin{table}[h!]
+    \centering
+    \begin{tabular}{ | p{.45cm} | p{2cm} | p{2.8cm} | p{3.5cm} | p{3.5cm} | p{1cm} |}	
+        \hline
+        \centering \bf No. & \bf Date  & \bf Action & \bf Expected Result & \bf Actual Result & \bf Pass? \\
+        \hline  
+        1 & 17/02/2025 &Register with valid details & User is registered and goes to login page & User registered and redirected to login & Yes \\  
+        \hline
+        2 & 17/02/2025 & Login with correct details & User logs in and sees search page & Logged in and search page is shown & Yes \\  
+        \hline
+        3 & 17/02/2025 &Login with wrong password&	Error message is shown &"Invalid login details" message appeared& Yes \\  
+        \hline
+        4 & 17/02/2025 & Search known word by typing&	Word meaning and details are shown	&Word info displayed correctly & Yes \\  
+        \hline
+        5 & 17/02/2025 & Search unknown word by typing	&Message says word not found	&"Word not found" message shown & Yes \\  
+        \hline
+        6 & 17/02/2025 & Use voice to search known word&	Word is found and details shown	&Voice recognized, word details shown & Yes \\  
+        \hline
+    \end{tabular}
+    \caption{Test case-1}
+\end{table}
+
+\pagebreak
+
+
+
+\subsection{Test Case-2 }
+
+\begin{table}[h!]
+\begin{center}
+    \begin{tabular}{ | p{.45cm} | p{2cm} | p{2.8cm} | p{3.5cm} | p{3.5cm} | p{1cm} |}	
+    \hline
+    \centering \bf No. & \bf Date  & \bf Action & \bf Expected Result & \bf Actual Result & \bf Pass? \\
+    \hline  
+    1 & 03/03/2025 & Tap audio icon for a word&	Correct pronunciation is played&	Pronunciation was clear and accurate& Yes \\  
+    \hline
+    2 & 03/03/2025 & Search and use app in offline mode&	Word details and pronunciation available offline	&Word data and audio worked without internet& Yes \\  
+    \hline
+    3 & 03/03/2025 &Search a word with synonyms/antonyms&	Synonyms, antonyms, and usage examples are shown&	All related info displayed correctly& Yes \\  
+    \hline
+   
+   
+\end{tabular}
+\caption{Test case-2}
+\end{center}
+\end{table}
+
+ \pagebreak
+
+\subsection{Test Case-3 }
+\begin{table}[h!]
+\begin{center}
+\begin{tabular}{ | p{.45cm} | p{2cm} | p{2.8cm} | p{3.5cm} | p{3.5cm} | p{1cm} |}	
+    \hline
+    \centering \bf No. & \bf Date  & \bf Action & \bf Expected Result & \bf Actual Result & \bf Pass? \\
+    \hline 
+    1 & 14/03/2025 & Admin checks user activity logs&	Recent searches and app usage are displayed&	User activity list was shown correctly& Yes \\  
+    \hline  
+    2 & 14/03/2025 & Admin views list of registered users&	User account details are shown&	User list and details were visible & Yes \\  
+    \hline  
+    3 & 14/03/2025 &Admin checks a specific user's account info&	Account info like email and username appears	&Correct user details were shown & Yes \\  
+    \hline  
+    4 & 14/03/2025 &App sends text-to-speech request to system &	Audio pronunciation is generated and returned	&System played generated audio& Yes \\  
+    \hline  
+     5 & 14/03/2025 &System receives invalid or empty TTS input&	Error message or fallback response shown&	App showed "Invalid input" message& Yes \\  
+    \hline  
+\end{tabular}
+\caption{Test case-3}
+\end{center}
+\end{table}
+\pagebreak
+
+\subsection{Test Case-4}
+\begin{table}[h!]
+    \centering
+    
+    
+\begin{center}
+    
+\begin{tabular}{ | p{.45cm} | p{2cm} | p{2.8cm} | p{3.5cm} | p{3.5cm} | p{1cm} |}	
+    \hline
+    \centering \bf No. & \bf Date  & \bf Action & \bf Expected Result & \bf Actual Result & \bf Pass? \\
+    \hline  
+    1 & 21/03/2025 & Speak a word clearly into mic&	System should convert speech to correct text&	Voice was converted to matching text & Yes \\  
+    \hline  
+    2 &  21/03/2025 & Speak unclear word&	System should show "Couldn’t recognize" message&	App showed unclear input warning& Yes \\  
+    \hline  
+    3 &  21/03/2025 & Search word stored in database	&Word details load fast from database	&Meaning and info appeared quickly& Yes \\  
+    \hline  
+    4 &  21/03/2025 & API fails to respond for new word&	App should handle error and show fallback&	"Unable to fetch translation" message displayed & Yes \\  
+    \hline  
+    
+\end{tabular}
+\caption{Test case-4}
+\end{center}
+\end{table}
+\pagebreak
+
+
+\subsection{Test Case-5}
+\begin{table}[h!]
+    \centering
+    
+\begin{center}
+       \begin{tabular}{ | p{.45cm} | p{2cm} | p{2.8cm} | p{3.5cm} | p{3.5cm} | p{1cm} |}	
+    \hline
+    \centering \bf No. & \bf Date  & \bf Action & \bf Expected Result & \bf Actual Result & \bf Pass? \\
+    \hline  
+    1 & 29/03/2025 & Search the same word multiple times&	System should serve it faster using cache&	Word loaded instantly after first search& Yes \\  
+    \hline  
+    2 & 29/03/2025 & Search a cached word with no internet&	Word data should load from cache&	Meaning displayed without needing internet & Yes \\  
+    \hline  
+    3 & 29/03/2025 & Use app offline, then reconnect &	Changes made offline should sync once connected&	Offline edits synced properly after regaining network & Yes \\  
+    \hline  
+     
+\end{tabular}
+\caption{Test case-5}   
+\end{center}
+\end{table}
+
+\pagebreak
+\section{Implementation}
+  The Tamil to Malayalam Dictionary App is implemented using a Flutter frontend and a Django REST framework backend, providing users with a smooth and efficient experience for searching Tamil words and retrieving their Malayalam meanings, translations, definitions, and pronunciations. The system is designed with essential features such as search functionality, offline mode, and user authentication, ensuring a user-friendly and efficient experience.\vspace{12pt}\newline The Flutter frontend is responsible for delivering a responsive and intuitive user interface. Users can enter a Tamil word in the search bar, and the app retrieves its meaning and details from the backend API. To enhance usability, the app supports offline mode, allowing users to access previously fetched words and meanings without an internet connection. Additionally, the pronunciation feature helps users listen to the correct pronunciation of words, improving their understanding.\vspace{12pt}\newline The backend, built with the Django REST framework, manages user authentication, word data, and API requests. The system follows a secure authentication process where users sign up using only their email and password. Admins, however, log in using a username. Passwords are securely hashed to enhance security. The backend also enables administrators to add new Tamil words along with their Malayalam meanings, definitions, and pronunciation details through a custom Flutter-based admin panel. The database efficiently stores words and their meanings, ensuring quick and accurate retrieval when a user searches for a word.\vspace{12pt}\newline The integration and deployment of the app ensure smooth communication between the frontend and backend using RESTful API endpoints. The system is optimized for fast response times and seamless navigation. The entire application is deployed on a server, making it accessible to users at any time. The Flutter admin panel allows administrators to manage word entries efficiently, ensuring that the dictionary remains updated and accurate. Overall, the Tamil to Malayalam Dictionary App offers a robust and practical solution for language translation, benefiting users by providing quick and accurate word translations along with pronunciation support. 
+
+
+
+  \pagebreak
+\chapter{RESULT AND DISCUSSION}
+
+   \justifying
+
+ The Tamil to Malayalam Dictionary App successfully provides users with an efficient and user-friendly platform for translating Tamil words into Malayalam. The app's implementation, using a Flutter frontend and a Django REST framework backend, ensures smooth performance and real-time data retrieval. Users can enter Tamil words, and the system quickly fetches their Malayalam meanings, translations, definitions, and pronunciations. The app also supports offline access, allowin
