@@ -1,0 +1,68 @@
+Based on the repository analysis of the OffChat project, here are the documented requirements tailored specifically to this codebase (Kotlin, SQLDelight, Compose, and P2P Networking).
+
+3.5.1 Developer Requirements
+3.5.1.1 Hardware Requirements
+
+To support the development, compilation, and testing of the OffChat Kotlin Multiplatform/Android application, the following hardware configuration is recommended:
+
+Processor: Intel Core i5 / AMD Ryzen 5 or higher (Hexa-core recommended for fast Gradle daemon execution).
+
+RAM: Minimum 16 GB (Android Studio and the Gradle build system for Kotlin Multiplatform are memory-intensive).
+
+Storage: At least 512 GB SSD (High-speed NVMe preferred to reduce build times and handle large .gradle caches).
+
+Physical Testing Devices: At least two physical Android devices are required to test peer-to-peer (P2P) discovery and messaging, as Android Emulators do not fully support Wi-Fi Direct or Bluetooth hardware abstraction.
+
+Network Interfaces: Dual-band Wi-Fi and Bluetooth 5.0+ support.
+
+3.5.1.2 Software Requirements
+
+The system is built using the modern Android/Kotlin stack designed for local-first, secure communication. The required software includes:
+
+Operating System: Windows 10/11, macOS (Sonoma or later), or Linux (Ubuntu 22.04 LTS).
+
+Development Framework: Kotlin Multiplatform (KMP) & Jetpack Compose.
+
+IDE / Code Editor: Android Studio (Ladybug or newer) with the Kotlin and Compose plugins installed.
+
+Build Tool: Gradle 8.10.2 or higher.
+
+Programming Languages: Kotlin (Standard for both UI and Logic).
+
+Database Tooling: SQLDelight (for type-safe local persistence generation).
+
+Networking Stack: Google Nearby Connections API / Bluetooth Low Energy (BLE).
+
+Dependency Injection: Koin (Android/Kotlin core).
+
+Security Library: Java Cryptography Architecture (JCA) for AES/RSA implementation.
+
+Version Control: Git.
+
+3.5.2 User Requirements
+
+To use the OffChat application for decentralized messaging, the user’s device must meet the following criteria:
+
+Device: Android smartphone with hardware support for Wi-Fi Direct and Bluetooth.
+
+Operating System: Android 8.0 (Oreo / API 26) or above (required for modern Foreground Service and Notification Channel support).
+
+Connectivity: Both Bluetooth and Wi-Fi must be toggled ON (Internet access is not required for messaging, but required for the initial app download).
+
+Storage: Minimum free storage of 50 MB for the application and local SQL database.
+
+Permissions Required:
+
+Nearby Devices: To discover and connect to peers (Required for Android 12+).
+
+Location Services: Required by the Android system for Bluetooth/Wi-Fi scanning.
+
+Notifications: To maintain the NearbyForegroundService and alert users of new messages.
+
+Camera (Optional): If the application implements QR code pairing for secure key exchange.
+
+Storage access: To save and share media files within chats.
+
+
+
+
